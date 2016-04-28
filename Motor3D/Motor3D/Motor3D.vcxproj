@@ -78,6 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="catmull.cpp" />
     <ClCompile Include="Escala.cpp" />
     <ClCompile Include="Objecto.cpp" />
     <ClCompile Include="Motor.cpp" />
@@ -89,6 +90,7 @@
     <ClCompile Include="Translacao.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="catmull.h" />
     <ClInclude Include="Escala.h" />
     <ClInclude Include="Objecto.h" />
     <ClInclude Include="Rotacao.h" />

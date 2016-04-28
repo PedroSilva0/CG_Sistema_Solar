@@ -1,0 +1,86 @@
+<scene>
+ 	<group>
+	  	<models>
+	     	<model file='sol.3d'/>
+	  	</models>
+	    <group>
+	    	<translate time=5>
+      			<point X=7.66 Y=0 Z=6.428/>
+      			<point X=0 Y=0 Z=10/>
+      			<point X=-7.66 Y=0 Z=6.428/>
+      			<point X=-10 Y=0 Z=0/>
+      			<point X=-7.66 Y=0 Z=-6.248/>
+      			<point X=0 Y=0 Z=-10/>
+      			<point X=7.66 Y=0 Z=-6.248/>
+      			<point X=10 Y=0 Z=0/>
+      		</translate>
+			<rotate time=-10 axisX=0 axisY=1 axisZ=0/>
+	    	<scale X=0.12 Y=0.12 Z=0.12 />		    
+		    <models>
+	     		<model file='sol.3d'/>
+	  		</models>
+		</group>
+		 <group>
+	    	<translate time=7>
+      			<point X=10 Y=0 Z=8.307/>
+      			<point X=0 Y=0 Z=13/>
+      			<point X=-10 Y=0 Z=8.307/>
+      			<point X=-13 Y=0 Z=0/>
+      			<point X=-10 Y=0 Z=-8.307/>
+      			<point X=0 Y=0 Z=-13/>
+      			<point X=10 Y=0 Z=-6.248/>
+      			<point X=13 Y=0 Z=0/>
+      		</translate>
+			<rotate time=-10 axisX=0 axisY=1 axisZ=0/>
+	    	<scale X=0.2 Y=0.2 Z=0.2 />	   
+		    <models>
+	     		<model file='sol.3d'/>
+	  		</models>
+		</group>
+		<group>
+	    	<translate time=10>
+      			<point X=11.9 Y=0 Z=12.14/>
+      			<point X=0 Y=0 Z=17/>
+      			<point X=-11.9 Y=0 Z=12.14/>
+      			<point X=-17 Y=0 Z=0/>
+      			<point X=-11.9 Y=0 Z=-12.14/>
+      			<point X=0 Y=0 Z=-17/>
+      			<point X=11.9 Y=0 Z=-12.14/>
+      			<point X=17 Y=0 Z=0/>
+      		</translate>
+			<rotate time=-10 axisX=0 axisY=1 axisZ=0/>
+	    	<scale X=0.24 Y=0.24 Z=0.24 />    
+		    <models>
+	     		<model file='sol.3d'/>
+	  		</models>
+		</group>
+		<group>
+	    	<translate time=2>
+      			<point X=1 Y=0 Z=1.118/>
+      			<point X=0 Y=0 Z=1.5/>
+      			<point X=-1 Y=0 Z=1.118/>
+      			<point X=-1.5 Y=0 Z=0/>
+      			<point X=-1 Y=0 Z=-1.118/>
+      			<point X=0 Y=0 Z=-1.5/>
+      			<point X=1 Y=0 Z=-1.118/>
+      			<point X=1.5 Y=0 Z=0/>
+      		</translate>
+	    	<rotate time=4 axisX=0 axisY=1 axisZ=0 />
+	    	<scale X=0.025 Y=0.025 Z=0.025 />		    
+		    <models>
+	     		<model file='sol.3d'/>
+	  		</models>
+		</group>
+	</group>
+</scene>
+	    
+
+
+
+
+
+
+
+
+
+

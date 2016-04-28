@@ -1,5 +1,6 @@
 #define _USE_MATH_DEFINES
 #include <stdlib.h>
+#include <GL/glew.h>
 #include <GL/glut.h>
 #include <math.h>
 #include <stdio.h>
@@ -13,9 +14,13 @@
 #include <fstream>
 #include <iostream>
 #include <cstring>
+#pragma comment(lib,"glew32.lib")
+
 //using namespace std;
 
 float px = 0, py = 0, pz = 0;
+float px_c = 0, py_c = 0, pz_c = 0;
+float rt_tempo = 0;
 float px2 = 0, py2 = 0, pz2 = 0;
 float eixoX = 0, eixoY = 0, eixoZ = 0, angulo = 0.0f;
 float sX = 1, sY = 1, sZ = 1;
@@ -23,10 +28,18 @@ float angulo2 = 0, angulo3 = 0;
 std::vector<Objecto> objectos;
 std::vector<float> coords;
 std::vector<char> transfor;
+//catmull
+float tr_tempo=0;
+std::vector<float> catmull_pontos;
 float raio = 100, cam_h = 0.5, cam_v = 0.3, camh_x = 0, camh_y = 0;
 //Para ver o numero de FPS
 int times, timebase, frame = 0, fps = 0;
 char print[20] = "";
+
+//Sem VBOS 900
+
+//VBO
+GLuint buffer[1];
 
 
 
@@ -56,6 +69,12 @@ void changeSize(int w, int h) {
 }
 
 
+void desenharVBO() {
+	glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
+	glVertexPointer(3, GL_FLOAT, 0, 0);
+	glDrawArrays(GL_TRIANGLES, 0, coords.size() / 3);
+}
+
 /*Guarda as coordenadas em vetor dinâmico*/
 void guardaCoordenadas(const char* filename) {
 	int linhas = 0;
@@ -79,19 +98,25 @@ void guardaCoordenadas(const char* filename) {
 }
 
 
+
 /*Guarda objecto*/
 void guardaObjecto() {
 	Objecto obj;
 	obj.guardaCoordenadasOBJ(coords);
-	coords.clear();
+	obj.set_cat_trans(catmull_pontos, tr_tempo);
+	tr_tempo = 0;
+	catmull_pontos.clear();
+	obj.setVBOBuffer();
+	//coords.clear();
 	obj.setEscala(sX, sY, sZ);
 	sX = 1; sY = 1; sZ = 1;
-	obj.setRotacao(eixoX, eixoY, eixoZ, angulo);
-	eixoX = 0; eixoY = 0; eixoZ = 0; angulo = 0;
+	obj.setRotacao(eixoX, eixoY, eixoZ, rt_tempo);
+	eixoX = 0; eixoY = 0; eixoZ = 0; rt_tempo = 0;
 	obj.setTranslacao(px, py, pz);
 	px = 0; py = 0; pz = 0;
 	obj.guardaTransfor(transfor);
 	transfor.clear();
+	coords.clear();
 	objectos.push_back(obj);
 }
 
@@ -110,6 +135,7 @@ void renderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// set the camera
+	
 	glLoadIdentity();
 	gluLookAt(raio*sin(cam_h)*cos(cam_v), raio*sin(cam_v), raio*cos(cam_h)*cos(cam_v),
 		0.0, 0.0, 0.0,
@@ -118,47 +144,74 @@ void renderScene(void) {
 	glTranslatef(px2, py2, pz2);
 	glRotatef(angulo3, 0, 1, 0);
 	glRotatef(angulo2, 1, 0, 0);
+	glRotatef(180, 0, 0, 1);
 
 	Objecto aux;
-
+	glPushMatrix();
 	//GRUPO GERAL - TRANSFORMAÇÕES E COORDENADAS
 	aux = objectos[0];
 	transfor = aux.getTransfor();
+	//glRotatef(rt_tempo, 0, 1, 0);
+	//rt_tempo += 10;
 	for (size_t j = 0; j < transfor.size(); j++) {
 		if (transfor[j] == 't') {
 			glTranslatef(aux.getTranslacaoX(), aux.getTranslacaoY(), aux.getTranslacaoZ());
 		}
 		if (transfor[j] == 'r') {
-			glRotatef(aux.getRotacaoAng(), aux.getRotacaoX(), aux.getRotacaoY(), aux.getRotacaoZ());
+			glRotatef(aux.getRotacaoAng(glutGet(GLUT_ELAPSED_TIME)), aux.getRotacaoX(), aux.getRotacaoY(), aux.getRotacaoZ());
 		}
 		if (transfor[j] == 's') {
 			glScalef(aux.getEscalaX(), aux.getEscalaY(), aux.getEscalaZ());
 		}
 	}
 	coords = aux.getCoords();
-	drawScreen();
+	buffer[0] = aux.getVBOBuffer();
+	//printf("%d\n", buffer[1]);
+	//drawScreen();
+	desenharVBO();
+	glPopMatrix();
+
 
 	// RESTANTES GRUPOS
 
 	for (size_t i = 1; i < objectos.size(); i++) {
 		aux = objectos[i];
+		
 		glPushMatrix();
+		//Posição da terra
+		if (i == 4) {
+			Objecto terra = objectos[3];
+			float cat_trans[3];
+			terra.get_cat_trans(glutGet(GLUT_ELAPSED_TIME), cat_trans);
+			glTranslatef(cat_trans[0], cat_trans[1], cat_trans[2]);
+
+		}
 		transfor = aux.getTransfor();
 		for (size_t j = 0; j < transfor.size(); j++) {
 			if (transfor[j] == 't') {
-				glTranslatef(aux.getTranslacaoX(), aux.getTranslacaoY(), aux.getTranslacaoZ());
+				//glTranslatef(aux.getTranslacaoX(), aux.getTranslacaoY(), aux.getTranslacaoZ());
+				float cat_trans[3];
+				aux.get_cat_trans(glutGet(GLUT_ELAPSED_TIME), cat_trans);
+				glTranslatef(cat_trans[0], cat_trans[1], cat_trans[2]);
 			}
 			if (transfor[j] == 'r') {
-				glRotatef(aux.getRotacaoAng(), aux.getRotacaoX(), aux.getRotacaoY(), aux.getRotacaoZ());
+				glRotatef(aux.getRotacaoAng(glutGet(GLUT_ELAPSED_TIME)), aux.getRotacaoX(), aux.getRotacaoY(), aux.getRotacaoZ());
 			}
 			if (transfor[j] == 's') {
 				glScalef(aux.getEscalaX(), aux.getEscalaY(), aux.getEscalaZ());
 			}
 		}
 
+		//glPopMatrix();
+		//glPushMatrix();
+		
+
+
 
 		coords = aux.getCoords();
-		drawScreen();
+		//drawScreen();
+		buffer[0] = aux.getVBOBuffer();
+		desenharVBO();
 		glPopMatrix();
 
 	}
@@ -250,15 +303,23 @@ void handleGrupo(TiXmlNode* pNode) {
 			handleGrupo(pNode->FirstChild());
 			handleGrupo(pNode->NextSibling());
 		}
-		if (!strcmp(name->Value(), "translate")) {
+		/*if (!strcmp(name->Value(), "translate")) {
 			name->QueryFloatAttribute("X", &px);
 			name->QueryFloatAttribute("Y", &py);
 			name->QueryFloatAttribute("Z", &pz);
 			transfor.push_back('t');
 			handleGrupo(pNode->NextSibling());
-		}
-		if (!strcmp(name->Value(), "rotate")) {
+		}*/
+		/*if (!strcmp(name->Value(), "rotate")) {
 			name->QueryFloatAttribute("angle", &angulo);
+			name->QueryFloatAttribute("axisX", &eixoX);
+			name->QueryFloatAttribute("axisY", &eixoY);
+			name->QueryFloatAttribute("axisZ", &eixoZ);
+			transfor.push_back('r');
+			handleGrupo(pNode->NextSibling());
+		}*/
+		if (!strcmp(name->Value(), "rotate")) {
+			name->QueryFloatAttribute("time", &rt_tempo);
 			name->QueryFloatAttribute("axisX", &eixoX);
 			name->QueryFloatAttribute("axisY", &eixoY);
 			name->QueryFloatAttribute("axisZ", &eixoZ);
@@ -270,6 +331,21 @@ void handleGrupo(TiXmlNode* pNode) {
 			name->QueryFloatAttribute("Y", &sY);
 			name->QueryFloatAttribute("Z", &sZ);
 			transfor.push_back('s');
+			handleGrupo(pNode->NextSibling());
+		}
+		if (!strcmp(name->Value(), "translate")) {
+			name->QueryFloatAttribute("time", &tr_tempo);
+			transfor.push_back('t');
+			handleGrupo(pNode->FirstChild());
+			handleGrupo(pNode->NextSibling());
+		}
+		if (!strcmp(name->Value(), "point")) {
+			name->QueryFloatAttribute("X", &px_c);
+			name->QueryFloatAttribute("Y", &py_c);
+			name->QueryFloatAttribute("Z", &pz_c);
+			catmull_pontos.push_back(px_c);
+			catmull_pontos.push_back(py_c);
+			catmull_pontos.push_back(pz_c);
 			handleGrupo(pNode->NextSibling());
 		}
 		if (!strcmp(name->Value(), "models")) {
@@ -290,31 +366,6 @@ void handleGrupo(TiXmlNode* pNode) {
 
 int main(int argc, char **argv) {
 	int menu1;
-	TiXmlDocument doc;
-	TiXmlDocument docAux;
-	if (argc == 2) {
-		TiXmlDocument doc(argv[1]);
-		doc.LoadFile();
-		if (doc.Error()) {
-			printf("Error in %s: %s\n", doc.Value(), doc.ErrorDesc());
-			exit(1);
-		}
-		TiXmlNode* node = 0;
-		handleGrupo(node->FirstChild());
-	}
-	else {
-		TiXmlDocument doc("sistemaSolarXML.xml");
-		doc.LoadFile();
-		if (doc.Error()) {
-			printf("Error in %s: %s\n", doc.Value(), doc.ErrorDesc());
-			exit(1);
-		}
-		TiXmlNode* node = 0;
-		node = doc.RootElement();
-		handleGrupo(node->FirstChild());
-	}
-
-
 	// inicialização
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
@@ -345,6 +396,38 @@ int main(int argc, char **argv) {
 	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT, GL_LINE);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+
+	//Iniciar o glew 
+	glewInit();
+
+
+	
+	TiXmlDocument doc;
+	TiXmlDocument docAux;
+	if (argc == 2) {
+		TiXmlDocument doc(argv[1]);
+		doc.LoadFile();
+		if (doc.Error()) {
+			printf("Error in %s: %s\n", doc.Value(), doc.ErrorDesc());
+			exit(1);
+		}
+		TiXmlNode* node = 0;
+		handleGrupo(node->FirstChild());
+	}
+	else {
+		//TiXmlDocument doc("sistemaSolarXML.xml");
+		TiXmlDocument doc("teste.xml");
+		doc.LoadFile();
+		if (doc.Error()) {
+			printf("Error in %s: %s\n", doc.Value(), doc.ErrorDesc());
+			exit(1);
+		}
+		TiXmlNode* node = 0;
+		node = doc.RootElement();
+		handleGrupo(node->FirstChild());
+	}
+
 	// entrar no ciclo do GLUT 
 	glutMainLoop();
 
