@@ -4,7 +4,7 @@
 	     	<model file='sol.3d'/>
 	  	</models>
 	    <group>
-	    	<translate time=5>
+	    	<translate time=2.41> 
       			<point X=7.66 Y=0 Z=6.428/>
       			<point X=0 Y=0 Z=10/>
       			<point X=-7.66 Y=0 Z=6.428/>
@@ -14,14 +14,14 @@
       			<point X=7.66 Y=0 Z=-6.248/>
       			<point X=10 Y=0 Z=0/>
       		</translate>
-			<rotate time=-10 axisX=0 axisY=1 axisZ=0/>
+			<rotate time=-1.16 axisX=0 axisY=1 axisZ=0/>
 	    	<scale X=0.12 Y=0.12 Z=0.12 />		    
 		    <models>
 	     		<model file='sol.3d'/>
 	  		</models>
 		</group>
 		 <group>
-	    	<translate time=7>
+	    	<translate time=6.56> 
       			<point X=10 Y=0 Z=8.307/>
       			<point X=0 Y=0 Z=13/>
       			<point X=-10 Y=0 Z=8.307/>
@@ -31,14 +31,14 @@
       			<point X=10 Y=0 Z=-6.248/>
       			<point X=13 Y=0 Z=0/>
       		</translate>
-			<rotate time=-10 axisX=0 axisY=1 axisZ=0/>
+			<rotate time=4.86 axisX=0 axisY=1 axisZ=0/>
 	    	<scale X=0.2 Y=0.2 Z=0.2 />	   
 		    <models>
 	     		<model file='sol.3d'/>
 	  		</models>
 		</group>
 		<group>
-	    	<translate time=10>
+	    	<translate time=10> 
       			<point X=11.9 Y=0 Z=12.14/>
       			<point X=0 Y=0 Z=17/>
       			<point X=-11.9 Y=0 Z=12.14/>
@@ -48,14 +48,14 @@
       			<point X=11.9 Y=0 Z=-12.14/>
       			<point X=17 Y=0 Z=0/>
       		</translate>
-			<rotate time=-10 axisX=0 axisY=1 axisZ=0/>
-	    	<scale X=0.24 Y=0.24 Z=0.24 />    
+			<rotate time=-0.027 axisX=0 axisY=1 axisZ=0/>
+	    	<scale X=-0.24 Y=0.24 Z=0.24 />    
 		    <models>
 	     		<model file='sol.3d'/>
 	  		</models>
 		</group>
 		<group>
-	    	<translate time=2>
+	    	<translate time=0.739> 
       			<point X=1 Y=0 Z=1.118/>
       			<point X=0 Y=0 Z=1.5/>
       			<point X=-1 Y=0 Z=1.118/>
@@ -65,8 +65,110 @@
       			<point X=1 Y=0 Z=-1.118/>
       			<point X=1.5 Y=0 Z=0/>
       		</translate>
-	    	<rotate time=4 axisX=0 axisY=1 axisZ=0 />
+	    	<rotate time=-0.54 axisX=0 axisY=1 axisZ=0 />
 	    	<scale X=0.025 Y=0.025 Z=0.025 />		    
+		    <models>
+	     		<model file='sol.3d'/>
+	  		</models>
+	  	</group>
+	  	<group>
+	  		<translate time=18.82> 
+	      		<point X=14.142 Y=0 Z=14.142/>
+	      		<point X=0 Y=0 Z=20/>
+	      		<point X=-14.142 Y=0 Z=14.142/>
+	      		<point X=-20 Y=0 Z=0/>
+	      		<point X=-14.142 Y=0 Z=-14.142/>
+	     		<point X=0 Y=0 Z=-20/>
+	      		<point X=14.142 Y=0 Z=-14.142/>
+	      		<point X=20 Y=0 Z=0/>
+      		</translate>
+		    <rotate time=-0.028 axisX=0 axisY=1 axisZ=0 />
+		    <scale X=0.15 Y=0.15 Z=0.15 />		    
+			<models>
+		     	<model file='sol.3d'/>
+		  	</models>	
+		</group>
+		<group>
+	    	<translate time=118.68>
+	      		<point X=19.445 Y=0 Z=19.445/>
+	      		<point X=0 Y=0 Z=27.5/>
+	      		<point X=-19.445 Y=0 Z=19.445/>
+	      		<point X=-27.5 Y=0 Z=0/>
+	      		<point X=-19.445 Y=0 Z=-19.445/>
+	     		<point X=0 Y=0 Z=-27.5/>
+	      		<point X=19.445 Y=0 Z=-19.445/>
+	      		<point X=27.5 Y=0 Z=0/>
+      		</translate>
+	    	<rotate time=-0.006 axisX=0 axisY=1 axisZ=0 />
+	    	<scale X=0.53 Y=0.53 Z=0.53 />		    
+		    <models>
+	     		<model file='sol.3d'/>
+	  		</models>
+		</group>
+		<group>
+	    	<translate time=294.767> 
+	      		<point X=23.688 Y=0 Z=23.688/>
+	      		<point X=0 Y=0 Z=33.5/>
+	      		<point X=-23.688 Y=0 Z=23.688/>
+	      		<point X=-33.5 Y=0 Z=0/>
+	      		<point X=-23.688 Y=0 Z=-23.688/>
+	     		<point X=0 Y=0 Z=-33.5/>
+	      		<point X=23.688 Y=0 Z=-23.688/>
+	      		<point X=33.5 Y=0 Z=0/>
+      		</translate>
+	    	<rotate time=-0.013 axisX=0 axisY=1 axisZ=0 />
+	    	<scale X=0.42 Y=0.42 Z=0.42 />		    
+		    <models>
+	     		<model file='sol.3d'/>
+	  		</models>
+		</group>
+		<group>
+	    	<translate time=10.109> 
+	      		<point X=27.577 Y=0 Z=27.577/>
+	      		<point X=0 Y=0 Z=39/>
+	      		<point X=-27.577 Y=0 Z=27.577/>
+	      		<point X=-39 Y=0 Z=0/>
+	      		<point X=-27.577 Y=0 Z=-27.577/>
+	     		<point X=0 Y=0 Z=-39/>
+	      		<point X=27.577 Y=0 Z=-27.577/>
+	      		<point X=39 Y=0 Z=0/>
+      		</translate>
+	    	<rotate time=0.019 axisX=0 axisY=1 axisZ=0 />
+	    	<scale X=0.38 Y=0.38 Z=0.38 />		    
+		    <models>
+	     		<model file='sol.3d'/>
+	  		</models>
+		</group>
+		<group>
+	    	<translate time=10.082> 
+	      		<point X=30.618 Y=0 Z=30.618/>
+	      		<point X=0 Y=0 Z=43.3/>
+	      		<point X=-30.618 Y=0 Z=30.618/>
+	      		<point X=-43.3 Y=0 Z=0/>
+	      		<point X=-30.618 Y=0 Z=-30.618/>
+	     		<point X=0 Y=0 Z=-43.3/>
+	      		<point X=30.618 Y=0 Z=-30.618/>
+	      		<point X=43.3 Y=0 Z=0/>
+      		</translate>
+	    	<rotate time=-0.018 axisX=0 axisY=1 axisZ=0 />
+	    	<scale X=0.3 Y=0.3 Z=0.3 />		    
+		    <models>
+	     		<model file='sol.3d'/>
+	  		</models>
+		</group>
+		<group>
+	    	<translate time=2482.547> 
+	      		<point X=31.608 Y=0 Z=31.608/>
+	      		<point X=0 Y=0 Z=44.7/>
+	      		<point X=-31.608 Y=0 Z=31.608/>
+	      		<point X=-44.7 Y=0 Z=0/>
+	      		<point X=-31.608 Y=0 Z=-31.608/>
+	     		<point X=0 Y=0 Z=-44.7/>
+	      		<point X=31.608 Y=0 Z=-31.608/>
+	      		<point X=44.7 Y=0 Z=0/>
+      		</translate>
+	    	<rotate time=0.178 axisX=0 axisY=1 axisZ=0 />
+	    	<scale X=0.05 Y=0.05 Z=0.05 />		    
 		    <models>
 	     		<model file='sol.3d'/>
 	  		</models>
