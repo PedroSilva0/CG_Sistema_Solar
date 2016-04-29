@@ -4,7 +4,6 @@
 #include <vector>
 #include "Escala.h"
 #include "Rotacao.h"
-#include "Translacao.h"
 #include "catmull.h"
 #include <GL/glew.h>
 #include <GL/glut.h>
@@ -16,7 +15,6 @@ class Objecto
 private:
 	Escala scale;
 	Rotacao rotation;
-	Translacao translation;
 	std::vector<float> coords;
 	std::vector<char> transfor;
 	GLuint buffer[1];
@@ -25,7 +23,6 @@ private:
 public:
 	void setEscala(float, float, float);
 	void setRotacao(float, float, float, float);
-	void setTranslacao(float, float, float);
 	void Objecto::set_cat_trans(std::vector<float> pontos, float tempo);
 	std::vector<float> getCoords();
 	float getEscalaX();
@@ -35,9 +32,6 @@ public:
 	float getRotacaoY();
 	float getRotacaoZ();
 	float getRotacaoAng(long);
-	float getTranslacaoX();
-	float getTranslacaoY();
-	float getTranslacaoZ();
 	std::vector<char> getTransfor();
 	void guardaTransfor(std::vector<char> c);
 	void guardaCoordenadasOBJ(std::vector<float> x);

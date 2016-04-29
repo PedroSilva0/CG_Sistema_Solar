@@ -9,7 +9,6 @@
 class catmull
 {
 private:
-	float res[3];  //resultado
 	std::vector<float> pontos;  //pontos da translação
 	int tot_pontos;
 	float tempo; //tempo total da translação do planeta em segundos
@@ -18,13 +17,11 @@ private:
 	
 
 public:
-	void set_res(float, float, float);
 	void set_pontos(std::vector<float> x);
 	void set_tot_pontos(int);
 	void set_tempo(float);
 	void set_tempo_medio(float);
 	void set_tempo_anterior(float);
-	void get_res(float r[3]);
 	float get_tempo();
 	float get_tempo_medio();
 	float get_tempo_anterior();

@@ -36,9 +36,6 @@
     <ClCompile Include="Escala.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Translacao.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Rotacao.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,9 +57,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rotacao.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Translacao.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="catmull.h">

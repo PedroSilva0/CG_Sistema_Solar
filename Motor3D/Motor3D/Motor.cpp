@@ -107,12 +107,10 @@ void guardaObjecto() {
 	tr_tempo = 0;
 	catmull_pontos.clear();
 	obj.setVBOBuffer();
-	//coords.clear();
 	obj.setEscala(sX, sY, sZ);
 	sX = 1; sY = 1; sZ = 1;
 	obj.setRotacao(eixoX, eixoY, eixoZ, rt_tempo);
 	eixoX = 0; eixoY = 0; eixoZ = 0; rt_tempo = 0;
-	obj.setTranslacao(px, py, pz);
 	px = 0; py = 0; pz = 0;
 	obj.guardaTransfor(transfor);
 	transfor.clear();
@@ -148,25 +146,9 @@ void renderScene(void) {
 
 	Objecto aux;
 	glPushMatrix();
-	//GRUPO GERAL - TRANSFORMAÇÕES E COORDENADAS
 	aux = objectos[0];
-	transfor = aux.getTransfor();
-	//glRotatef(rt_tempo, 0, 1, 0);
-	//rt_tempo += 10;
-	for (size_t j = 0; j < transfor.size(); j++) {
-		if (transfor[j] == 't') {
-			glTranslatef(aux.getTranslacaoX(), aux.getTranslacaoY(), aux.getTranslacaoZ());
-		}
-		if (transfor[j] == 'r') {
-			glRotatef(aux.getRotacaoAng(glutGet(GLUT_ELAPSED_TIME)), aux.getRotacaoX(), aux.getRotacaoY(), aux.getRotacaoZ());
-		}
-		if (transfor[j] == 's') {
-			glScalef(aux.getEscalaX(), aux.getEscalaY(), aux.getEscalaZ());
-		}
-	}
 	coords = aux.getCoords();
 	buffer[0] = aux.getVBOBuffer();
-	//printf("%d\n", buffer[1]);
 	//drawScreen();
 	desenharVBO();
 	glPopMatrix();
@@ -189,7 +171,6 @@ void renderScene(void) {
 		transfor = aux.getTransfor();
 		for (size_t j = 0; j < transfor.size(); j++) {
 			if (transfor[j] == 't') {
-				//glTranslatef(aux.getTranslacaoX(), aux.getTranslacaoY(), aux.getTranslacaoZ());
 				float cat_trans[3];
 				aux.get_cat_trans(glutGet(GLUT_ELAPSED_TIME), cat_trans);
 				glTranslatef(cat_trans[0], cat_trans[1], cat_trans[2]);
@@ -201,12 +182,6 @@ void renderScene(void) {
 				glScalef(aux.getEscalaX(), aux.getEscalaY(), aux.getEscalaZ());
 			}
 		}
-
-		//glPopMatrix();
-		//glPushMatrix();
-		
-
-
 
 		coords = aux.getCoords();
 		//drawScreen();
@@ -303,21 +278,6 @@ void handleGrupo(TiXmlNode* pNode) {
 			handleGrupo(pNode->FirstChild());
 			handleGrupo(pNode->NextSibling());
 		}
-		/*if (!strcmp(name->Value(), "translate")) {
-			name->QueryFloatAttribute("X", &px);
-			name->QueryFloatAttribute("Y", &py);
-			name->QueryFloatAttribute("Z", &pz);
-			transfor.push_back('t');
-			handleGrupo(pNode->NextSibling());
-		}*/
-		/*if (!strcmp(name->Value(), "rotate")) {
-			name->QueryFloatAttribute("angle", &angulo);
-			name->QueryFloatAttribute("axisX", &eixoX);
-			name->QueryFloatAttribute("axisY", &eixoY);
-			name->QueryFloatAttribute("axisZ", &eixoZ);
-			transfor.push_back('r');
-			handleGrupo(pNode->NextSibling());
-		}*/
 		if (!strcmp(name->Value(), "rotate")) {
 			name->QueryFloatAttribute("time", &rt_tempo);
 			name->QueryFloatAttribute("axisX", &eixoX);
@@ -369,8 +329,8 @@ int main(int argc, char **argv) {
 	// inicialização
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(100, 100);
-	glutInitWindowSize(800, 800);
+	glutInitWindowPosition(0, 0);
+	glutInitWindowSize(1000, 500);
 	glutCreateWindow("CG@DI-UM");
 
 

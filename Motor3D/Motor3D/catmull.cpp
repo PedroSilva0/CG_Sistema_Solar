@@ -4,13 +4,6 @@
 #include <iostream>
 #include <string>
 
-void catmull::set_res(float x, float y, float z)
-{
-	res[0] = x;
-	res[1] = x;
-	res[2] = x;
-}
-
 void catmull::set_pontos(std::vector<float> x)
 {
 	pontos = x;
@@ -34,14 +27,6 @@ void catmull::set_tempo_medio(float x)
 void catmull::set_tempo_anterior(float x)
 {
 	tempo_anterior = x;
-}
-
-void catmull::get_res(float r[3])
-{
-	r[0] = res[0];
-	r[1] = res[1];
-	r[2] = res[2];
-
 }
 
 float catmull::get_tempo()

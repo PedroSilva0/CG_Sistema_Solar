@@ -40,9 +40,8 @@
 			cat_trans.set_tempo_anterior(current_time);
 		}
 		else {
-			//printf("tempo medio = %f, current_time= %f, tempo_anterior= %f, tempo= %f", cat_trans.get_tempo_medio(), current_time, cat_trans.get_tempo_anterior(), cat_trans.get_tempo());
 			float aux = cat_trans.get_tempo_medio() + ((current_time - cat_trans.get_tempo_anterior()) / (cat_trans.get_tempo() * 1000));
-			//printf("%f", aux);
+			
 			cat_trans.set_tempo_medio(aux);
 			cat_trans.set_tempo_anterior(current_time);
 			cat_trans.getGlobalCatmullRomPoint(aux, res);
@@ -57,10 +56,7 @@
 	void Objecto::setRotacao(float ax, float ay, float az, float angulo){
 		rotation.set_values(ax, ay, az,angulo);
 	}
-
-	void Objecto::setTranslacao(float ax, float ay, float az){
-		translation.set_values(ax, ay, az);
-	}
+	
 
 	void Objecto::set_cat_trans(std::vector<float> pontos,float tempo)
 	{
@@ -104,18 +100,7 @@
 		return rotation.getAng(a);
 	}
 
-	float Objecto::getTranslacaoX(){
-		return translation.getX();
-	}
-
-	float Objecto::getTranslacaoY(){
-		return translation.getY();
-	}
-
-	float Objecto::getTranslacaoZ(){
-		return translation.getZ();
-	}
-
+	
 	std::vector<char> Objecto::getTransfor(){
 		return transfor;
 	}
