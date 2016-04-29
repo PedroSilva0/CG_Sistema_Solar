@@ -416,8 +416,8 @@ int main(int argc, char **argv) {
 		handleGrupo(node->FirstChild());
 	}
 	else {
-		//TiXmlDocument doc("sistemaSolarXML.xml");
-		TiXmlDocument doc("teste.xml");
+		TiXmlDocument doc("sistema_solar.xml");
+		//TiXmlDocument doc("teste.xml");
 		doc.LoadFile();
 		if (doc.Error()) {
 			printf("Error in %s: %s\n", doc.Value(), doc.ErrorDesc());

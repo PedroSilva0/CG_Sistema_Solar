@@ -9,13 +9,13 @@
 using namespace std;
 
 
-void areaPlana(float altura, float comprimento,char* filename){
+void areaPlana(float altura, float comprimento, char* filename) {
 	ofstream file;
 	file.open(filename, ios::ate);
-	
+
 	//triangulo 1
 
-	file << -comprimento / 2 << " " << altura / 2 << " " << 0 << "\n" ;
+	file << -comprimento / 2 << " " << altura / 2 << " " << 0 << "\n";
 	file << -comprimento / 2 << " " << -altura / 2 << " " << 0 << "\n";
 	file << comprimento / 2 << " " << altura / 2 << " " << 0 << "\n";
 
@@ -26,7 +26,7 @@ void areaPlana(float altura, float comprimento,char* filename){
 	file.close();
 }
 
-void paralelipipedo(float altura, float comprimento, float largura, char* filename){
+void paralelipipedo(float altura, float comprimento, float largura, char* filename) {
 	ofstream file;
 	file.open(filename, ios::ate);
 	//face frontal
@@ -107,7 +107,7 @@ void paralelipipedo(float altura, float comprimento, float largura, char* filena
 	file.close();
 }
 
-void cone(float raio, float altura, int fatias, int camadas, char* filename){
+void cone(float raio, float altura, int fatias, int camadas, char* filename) {
 	float salto = altura / camadas;
 	int camaux = 1;
 	float aux;
@@ -118,11 +118,11 @@ void cone(float raio, float altura, int fatias, int camadas, char* filename){
 
 	ofstream file;
 	file.open(filename, ios::ate);
-	
+
 	//imprimir camadas
-	while (camaux <= camadas){
+	while (camaux <= camadas) {
 		//imprimir fatias
-		for (aux = 0; aux <= fatias; aux++){
+		for (aux = 0; aux <= fatias; aux++) {
 			file << raioCam * sin(alpha1) << " " << alturaCam << " " << raioCam* cos(alpha1) << "\n";
 			file << raio* sin(alpha1) << " " << alturaCam2 << " " << raio* cos(alpha1) << "\n";
 			file << raioCam*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << alturaCam << " " << raioCam*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n";
@@ -141,7 +141,7 @@ void cone(float raio, float altura, int fatias, int camadas, char* filename){
 	file.close();
 }
 
-void esfera(float raio, int fatias, int camadas, char* filename){
+void esfera(float raio, int fatias, int camadas, char* filename) {
 	double raioS, raioI;
 	double alpha1, betaS, betaI;
 	int auxC, auxF;
@@ -149,10 +149,10 @@ void esfera(float raio, int fatias, int camadas, char* filename){
 	betaI = betaS - (M_PI / camadas);
 	ofstream file;
 	file.open(filename, ios::ate);
-	for (auxC = 1; auxC <= camadas; auxC++){
+	for (auxC = 1; auxC <= camadas; auxC++) {
 		raioS = raio*cos(betaS);
 		raioI = raio*cos(betaI);
-		for (auxF = 0; auxF <= fatias; auxF++){
+		for (auxF = 0; auxF <= fatias; auxF++) {
 			file << raioS*sin(alpha1) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1) << "\n";
 			file << raioI*sin(alpha1) << " " << raio*sin(betaI) << " " << raioI*cos(alpha1) << "\n";
 			file << raioS*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n";
@@ -168,11 +168,59 @@ void esfera(float raio, int fatias, int camadas, char* filename){
 	file.close();
 }
 
+
+void anel(float raioFora, float raioDentro, int fatias, char* filename) {
+
+	float x;
+	float x_prox;
+	float z;
+	float z_prox;
+	float y;
+	float y_prox;
+	float z2;
+	float z2_prox;
+	float alpha = 2 * M_PI / fatias;
+	ofstream file;
+	file.open(filename, ios::ate);
+
+
+	if (file.is_open() && file.good())
+	{
+		for (int j = 0; j < fatias; j++) {
+
+			x = raioFora*sin(alpha*j);
+			x_prox = raioFora*sin(alpha*(j + 1));
+			z = raioFora*cos(alpha*j);
+			z_prox = raioFora*cos(alpha*(j + 1));
+			y = (raioDentro)*sin(alpha*j);
+			z2 = (raioDentro)*cos(alpha*j);
+			y_prox = (raioDentro)*sin(alpha*(j + 1));
+			z2_prox = (raioDentro)*cos(alpha*(j + 1));
+
+
+
+			file << x << " " << 0 << " " << z << endl;
+			file << x_prox << " " << 0 << " " << z_prox << endl;
+			file << y_prox << " " << 0 << " " << z2_prox << endl;
+			//segundo triangulo
+			file << x << " " << 0 << " " << z << endl;
+			file << y_prox << " " << 0 << " " << z2_prox << endl;
+			file << y << " " << 0 << " " << z2 << endl;
+
+
+
+		}
+
+	}
+	file.close();
+}
+
+
 int main(int argc, char **argv) {
 	std::string::size_type sz;     // alias of size_t
 	//superficie plana
-	if ((strcmp(argv[1], "plane") == 0) && argc == 5){
-		areaPlana(stof(argv[2],&sz), stof(argv[3],&sz), argv[4]);
+	if ((strcmp(argv[1], "plane") == 0) && argc == 5) {
+		areaPlana(stof(argv[2], &sz), stof(argv[3], &sz), argv[4]);
 		printf("Ficheiro criado com sucesso.");
 		return 0;
 	}
@@ -180,10 +228,10 @@ int main(int argc, char **argv) {
 		printf("Argumentos insuficientes.");
 		return 0;
 	}*/
-	
+
 	//paralelipipedo
-	if ((strcmp(argv[1], "box") == 0) && argc == 6){
-		paralelipipedo(stof(argv[2],&sz), stof(argv[3], &sz), stof(argv[4], &sz),argv[5]);
+	if ((strcmp(argv[1], "box") == 0) && argc == 6) {
+		paralelipipedo(stof(argv[2], &sz), stof(argv[3], &sz), stof(argv[4], &sz), argv[5]);
 		printf("Ficheiro criado com sucesso.");
 		return 0;
 	}
@@ -193,8 +241,8 @@ int main(int argc, char **argv) {
 	}*/
 
 	//Cone
-	if ((strcmp(argv[1], "cone") == 0) && argc == 7){
-		cone(stof(argv[2], &sz), stof(argv[3], &sz), atoi(argv[4]),atoi(argv[5]),argv[6]);
+	if ((strcmp(argv[1], "cone") == 0) && argc == 7) {
+		cone(stof(argv[2], &sz), stof(argv[3], &sz), atoi(argv[4]), atoi(argv[5]), argv[6]);
 		printf("Ficheiro criado com sucesso.");
 		return 0;
 	}
@@ -204,8 +252,8 @@ int main(int argc, char **argv) {
 	}*/
 
 	//esfera
-	if ((strcmp(argv[1], "sphere") == 0) && argc == 6 ){
-		esfera(stof(argv[2], &sz),atoi(argv[3]), atoi(argv[4]),argv[5]);
+	if ((strcmp(argv[1], "sphere") == 0) && argc == 6) {
+		esfera(stof(argv[2], &sz), atoi(argv[3]), atoi(argv[4]), argv[5]);
 		printf("Ficheiro criado com sucesso.");
 		return 0;
 	}
@@ -214,8 +262,15 @@ int main(int argc, char **argv) {
 		return 0;
 	}*/
 
+	//anel
+	if ((strcmp(argv[1], "ring") == 0) && argc == 6) {
+		anel(stof(argv[2], &sz), stof(argv[3], &sz), atoi(argv[4]), argv[5]);
+		printf("Ficheiro criado com sucesso.");
+		return 0;
+	}
+
 	//Objecto não identificado
 	printf("Primitiva inixestente");
 	return 0;
-	}
-	
+}
+
