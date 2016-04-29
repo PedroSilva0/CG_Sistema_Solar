@@ -120,7 +120,8 @@
 	    	<scale X=0.42 Y=0.42 Z=0.42 />		    
 		    <models>
 	     		<model file='sol.3d'/>
-	     		<model file='anel.3d'/>
+	     		<model file='anel_sat.3d'/>
+	     		
 	  		</models>
 		</group>
 		<group>
@@ -138,7 +139,7 @@
 	    	<scale X=0.38 Y=0.38 Z=0.38 />		    
 		    <models>
 	     		<model file='sol.3d'/>
-	     		<model file='anel_sat.3d'/>
+	     		<model file='anel_ura.3d'/>
 	  		</models>
 		</group>
 		<group>
@@ -160,20 +161,19 @@
 		</group>
 		<group>
 	    	<translate time=2482.547> 
-	      		<point X=31.608 Y=0 Z=31.608/>
-	      		<point X=0 Y=0 Z=44.7/>
-	      		<point X=-31.608 Y=0 Z=31.608/>
-	      		<point X=-44.7 Y=0 Z=0/>
-	      		<point X=-31.608 Y=0 Z=-31.608/>
-	     		<point X=0 Y=0 Z=-44.7/>
-	      		<point X=31.608 Y=0 Z=-31.608/>
-	      		<point X=44.7 Y=0 Z=0/>
+	      		<point X=32.527 Y=0 Z=32.527/>
+	      		<point X=0 Y=0 Z=46/>
+	      		<point X=-32.527 Y=0 Z=32.527/>
+	      		<point X=-46 Y=0 Z=0/>
+	      		<point X=-32.527 Y=0 Z=-32.527/>
+	     		<point X=0 Y=0 Z=-46/>
+	      		<point X=32.527 Y=0 Z=-32.527/>
+	      		<point X=46 Y=0 Z=0/>
       		</translate>
 	    	<rotate time=0.178 axisX=0 axisY=1 axisZ=0 />
 	    	<scale X=0.05 Y=0.05 Z=0.05 />		    
 		    <models>
 	     		<model file='sol.3d'/>
-	     		<model file='anel_ura.3d'/>
 	  		</models>
 		</group>
 	</group>

@@ -197,15 +197,26 @@ void anel(float raioFora, float raioDentro, int fatias, char* filename) {
 			y_prox = (raioDentro)*sin(alpha*(j + 1));
 			z2_prox = (raioDentro)*cos(alpha*(j + 1));
 
-
-
-			file << x << " " << 0 << " " << z << endl;
-			file << x_prox << " " << 0 << " " << z_prox << endl;
-			file << y_prox << " " << 0 << " " << z2_prox << endl;
+			//face superior
+			//primeiro triângulo
+			file << x << " " << 0 << " " << z << "\n";
+			file << x_prox << " " << 0 << " " << z_prox << "\n";
+			file << y_prox << " " << 0 << " " << z2_prox << "\n";
 			//segundo triangulo
-			file << x << " " << 0 << " " << z << endl;
-			file << y_prox << " " << 0 << " " << z2_prox << endl;
-			file << y << " " << 0 << " " << z2 << endl;
+			file << x << " " << 0 << " " << z << "\n";
+			file << y_prox << " " << 0 << " " << z2_prox << "\n";
+			file << y << " " << 0 << " " << z2 << "\n";
+
+			//face inferior
+
+			//primeiro triangulo
+			file << y_prox << " " << 0 << " " << z2_prox << "\n";
+			file << x_prox << " " << 0 << " " << z_prox << "\n";
+			file << x << " " << 0 << " " << z << "\n";
+			//segundo triangulo
+			file << y << " " << 0 << " " << z2 << "\n";
+			file << y_prox << " " << 0 << " " << z2_prox << "\n";
+			file << x << " " << 0 << " " << z << "\n";
 
 
 
