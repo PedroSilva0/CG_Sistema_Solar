@@ -175,10 +175,10 @@ void anel(float raioFora, float raioDentro, int fatias, char* filename) {
 	float x_prox;
 	float z;
 	float z_prox;
-	float y;
-	float y_prox;
-	float z2;
-	float z2_prox;
+	float x_i;
+	float x_i_prox;
+	float z_i;
+	float z_i_prox;
 	float alpha = 2 * M_PI / fatias;
 	ofstream file;
 	file.open(filename, ios::ate);
@@ -192,30 +192,30 @@ void anel(float raioFora, float raioDentro, int fatias, char* filename) {
 			x_prox = raioFora*sin(alpha*(j + 1));
 			z = raioFora*cos(alpha*j);
 			z_prox = raioFora*cos(alpha*(j + 1));
-			y = (raioDentro)*sin(alpha*j);
-			z2 = (raioDentro)*cos(alpha*j);
-			y_prox = (raioDentro)*sin(alpha*(j + 1));
-			z2_prox = (raioDentro)*cos(alpha*(j + 1));
+			x_i = (raioDentro)*sin(alpha*j);    //isto é o X
+			z_i = (raioDentro)*cos(alpha*j);
+			x_i_prox = (raioDentro)*sin(alpha*(j + 1)); 
+			z_i_prox = (raioDentro)*cos(alpha*(j + 1));
 
 			//face superior
 			//primeiro triângulo
 			file << x << " " << 0 << " " << z << "\n";
 			file << x_prox << " " << 0 << " " << z_prox << "\n";
-			file << y_prox << " " << 0 << " " << z2_prox << "\n";
+			file << x_i_prox << " " << 0 << " " << z_i_prox << "\n";
 			//segundo triangulo
 			file << x << " " << 0 << " " << z << "\n";
-			file << y_prox << " " << 0 << " " << z2_prox << "\n";
-			file << y << " " << 0 << " " << z2 << "\n";
+			file << x_i_prox << " " << 0 << " " << z_i_prox << "\n";
+			file << x_i << " " << 0 << " " << z_i << "\n";
 
 			//face inferior
 
 			//primeiro triangulo
-			file << y_prox << " " << 0 << " " << z2_prox << "\n";
+			file << x_i_prox << " " << 0 << " " << z_i_prox << "\n";
 			file << x_prox << " " << 0 << " " << z_prox << "\n";
 			file << x << " " << 0 << " " << z << "\n";
 			//segundo triangulo
-			file << y << " " << 0 << " " << z2 << "\n";
-			file << y_prox << " " << 0 << " " << z2_prox << "\n";
+			file << x_i << " " << 0 << " " << z_i << "\n";
+			file << x_i_prox << " " << 0 << " " << z_i_prox << "\n";
 			file << x << " " << 0 << " " << z << "\n";
 
 

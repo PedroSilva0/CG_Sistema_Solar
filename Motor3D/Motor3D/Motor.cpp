@@ -18,11 +18,11 @@
 
 //using namespace std;
 
-float px = 0, py = 0, pz = 0;
+
 float px_c = 0, py_c = 0, pz_c = 0;
 float rt_tempo = 0;
 float px2 = 0, py2 = 0, pz2 = 0;
-float eixoX = 0, eixoY = 0, eixoZ = 0, angulo = 0.0f;
+float eixoX = 0, eixoY = 0, eixoZ = 0;
 float sX = 1, sY = 1, sZ = 1;
 float angulo2 = 0, angulo3 = 0;
 std::vector<Objecto> objectos;
@@ -111,7 +111,6 @@ void guardaObjecto() {
 	sX = 1; sY = 1; sZ = 1;
 	obj.setRotacao(eixoX, eixoY, eixoZ, rt_tempo);
 	eixoX = 0; eixoY = 0; eixoZ = 0; rt_tempo = 0;
-	px = 0; py = 0; pz = 0;
 	obj.guardaTransfor(transfor);
 	transfor.clear();
 	coords.clear();
@@ -120,7 +119,7 @@ void guardaObjecto() {
 
 void drawScreen() {
 	glBegin(GL_TRIANGLES);
-	glColor3f(1, 0, 0);
+	//glColor3f(1, 0, 0);
 	for (size_t i = 0; i < coords.size(); i = i + 3) {
 		glVertex3f(coords[i], coords[i + 1], coords[i + 2]);
 	}
