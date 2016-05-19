@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
+#include <IL/il.h>
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
@@ -15,6 +16,7 @@
 #include <iostream>
 #include <cstring>
 #pragma comment(lib,"glew32.lib")
+#pragma comment(lib, "devil.lib")
 
 //using namespace std;
 
@@ -27,7 +29,11 @@ float sX = 1, sY = 1, sZ = 1;
 float angulo2 = 0, angulo3 = 0;
 std::vector<Objecto> objectos;
 std::vector<float> coords;
+std::vector<float> normais;
+std::vector<float> textura;
 std::vector<char> transfor;
+std::string texture_filename;
+
 //catmull
 float tr_tempo=0;
 std::vector<float> catmull_pontos;
@@ -39,8 +45,18 @@ char print[20] = "";
 //Sem VBOS 900
 
 //VBO
-GLuint buffer[1];
+GLuint buffer[3];  // 0 é coordenadas, 1 é normais,2 e textura
 
+
+
+//LUZ
+float pos[4] = { -1,0,0,1 },
+amb[3] = { 1,1,1 },
+diff[3] = { 1,1,1 },
+matt[4] = { 1,1,1,1 };
+
+//devil
+GLuint texID;
 
 
 void changeSize(int w, int h) {
@@ -69,10 +85,29 @@ void changeSize(int w, int h) {
 }
 
 
+
+
 void desenharVBO() {
+	//VBO de coordenadas
 	glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
 	glVertexPointer(3, GL_FLOAT, 0, 0);
+
+	//VBO de normais
+	glBindBuffer(GL_ARRAY_BUFFER, buffer[1]);
+	glNormalPointer(GL_FLOAT,0,0);
+
+	//VBO de texturas
+	glBindBuffer(GL_ARRAY_BUFFER, buffer[2]);
+	glTexCoordPointer(2, GL_FLOAT, 0, 0);
+	glBindTexture(GL_TEXTURE_2D, texID);
+
+	//float white[4] = { 0.7,0.3,0.6,0.5 };
+	//glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
+
 	glDrawArrays(GL_TRIANGLES, 0, coords.size() / 3);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
 /*Guarda as coordenadas em vetor dinâmico*/
@@ -82,19 +117,42 @@ void guardaCoordenadas(const char* filename) {
 	std::ifstream infile(filename);
 	if (infile.is_open()) {
 		while (getline(infile, line)) {
-			linhas++;
-			char * cstr = new char[line.length() + 1];
-			strcpy(cstr, line.c_str());
-			char * p = strtok(cstr, " ");
-			while (p != 0) {
-				coords.push_back(atof(p));
-				p = strtok(NULL, " ");
+			if (linhas % 3 == 0) {
+				linhas++;
+				char * cstr = new char[line.length() + 1];
+				strcpy(cstr, line.c_str());
+				char * p = strtok(cstr, " ");
+				while (p != 0) {
+					coords.push_back(atof(p));
+					p = strtok(NULL, " ");
+				}
+			}
+			else if (linhas % 3 == 1) {
+				linhas++;
+				char * cstr = new char[line.length() + 1];
+				strcpy(cstr, line.c_str());
+				char * p = strtok(cstr, " ");
+				while (p != 0) {
+					normais.push_back(atof(p));
+					p = strtok(NULL, " ");
+				}
+			}
+			else {
+				linhas++;
+				char * cstr = new char[line.length() + 1];
+				strcpy(cstr, line.c_str());
+				char * p = strtok(cstr, " ");
+				while (p != 0) {
+					textura.push_back(atof(p));
+					p = strtok(NULL, " ");
+				}
 			}
 		}
 	}
 	else {
 		printf("Não abri ficheiro\n");
 	}
+	//printf("tot_linhas: %d\n",linhas );
 }
 
 
@@ -102,19 +160,26 @@ void guardaCoordenadas(const char* filename) {
 /*Guarda objecto*/
 void guardaObjecto() {
 	Objecto obj;
-	obj.guardaCoordenadasOBJ(coords);
-	obj.set_cat_trans(catmull_pontos, tr_tempo);
-	tr_tempo = 0;
-	catmull_pontos.clear();
-	obj.setVBOBuffer();
-	obj.setEscala(sX, sY, sZ);
-	sX = 1; sY = 1; sZ = 1;
-	obj.setRotacao(eixoX, eixoY, eixoZ, rt_tempo);
-	eixoX = 0; eixoY = 0; eixoZ = 0; rt_tempo = 0;
-	obj.guardaTransfor(transfor);
-	transfor.clear();
-	coords.clear();
-	objectos.push_back(obj);
+	obj.loadTexture(texture_filename);
+	obj.guardaCoordenadasOBJ(coords);  //guarda coordenadas dos pontos
+	obj.setNormais(normais);			// guarda normais dos pontos
+	obj.setTexture(textura);			//guarda coords de textura
+	obj.set_cat_trans(catmull_pontos, tr_tempo);  //guarda os pontos a serem utilizados na translação e o tempo
+	tr_tempo = 0;						//reset do tempo
+	catmull_pontos.clear();				//reset dos pontos
+	obj.setVBOBuffer();					//guarda o buffer a ser utilizado no desenho dos VBO (coordenadas)
+	obj.setNormalVBOBuffer();           // guarda o buffer a ser utilizado no desenho dos VBO (normais)
+	obj.setTextureVBOBuffer();			//guarda o buffer a ser utilizado no desenho dos VBO (textura)
+	obj.setEscala(sX, sY, sZ);			//guarda a escala do objecto
+	sX = 1; sY = 1; sZ = 1;				//reset da escala
+	obj.setRotacao(eixoX, eixoY, eixoZ, rt_tempo);	//guarda a rotação do objecto
+	eixoX = 0; eixoY = 0; eixoZ = 0; rt_tempo = 0;	//reset da rotação global
+	obj.guardaTransfor(transfor);					// guarda ordem das transformações
+	transfor.clear();							//reset da ordem de transformações
+	coords.clear();								//reset das coordenadas
+	normais.clear();							//reset das normais
+	textura.clear();							//reset das texturas
+	objectos.push_back(obj);					//guarda objecto
 }
 
 void drawScreen() {
@@ -127,7 +192,6 @@ void drawScreen() {
 }
 
 void renderScene(void) {
-
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -139,19 +203,87 @@ void renderScene(void) {
 		0.0f, 1.0f, 0.0f);
 
 	glTranslatef(px2, py2, pz2);
+	//glTranslatef(4, 0, 0);
 	glRotatef(angulo3, 0, 1, 0);
 	glRotatef(angulo2, 1, 0, 0);
 	glRotatef(180, 0, 0, 1);
+		float pos1[4] = {0,20,0,1};
+	 float amb1[3] = {1,1,1};
+	 float dif1[3] = {0,0,0};
+	 float esp1[3] = { 0.3,0.3,0.3 };
+		glEnable(GL_LIGHT1);
+		glLightfv(GL_LIGHT1, GL_POSITION, pos1);
+		glLightfv(GL_LIGHT1, GL_AMBIENT, amb1);
+		glLightfv(GL_LIGHT1, GL_DIFFUSE, dif1);
+
+		float pos2[4] = { 0,-17,0,1 };
+		float amb2[3] = { 1,1,1 };
+		float dif2[3] = { 0,0,0 };
+		float esp2[3] = { 0.3,0.3,0.3 };
+		glEnable(GL_LIGHT2);
+		glLightfv(GL_LIGHT2, GL_POSITION, pos2);
+		glLightfv(GL_LIGHT2, GL_DIFFUSE, dif2);
+		
+		float pos3[4] = { 20,0,0,1 };
+		float amb3[3] = { 1,1,1 };
+		float dif3[3] = { 1,1,1 };
+		float esp3[3] = { 0.3,0.3,0.3 };
+		glEnable(GL_LIGHT3);
+		glLightfv(GL_LIGHT3, GL_POSITION, pos3);
+		glLightfv(GL_LIGHT3, GL_DIFFUSE, dif3);
+
+		float pos4[4] = { -17,0,0,1 };
+		float amb4[3] = { 1,1,1 };
+		float dif4[3] = { 1,1,1 };
+		float esp4[3] = { 0.3,0.3,0.3 };
+		glEnable(GL_LIGHT4);
+		glLightfv(GL_LIGHT4, GL_POSITION, pos4);
+		glLightfv(GL_LIGHT4, GL_DIFFUSE, dif4);
+
+		float pos5[4] = { 0,0,17,1 };
+		float amb5[3] = { 1,1,1 };
+		float dif5[3] = { 1,1,1 };
+		float esp5[3] = { 0.3,0.3,0.3 };
+		glEnable(GL_LIGHT5);
+		glLightfv(GL_LIGHT5, GL_POSITION, pos5);
+		glLightfv(GL_LIGHT5, GL_DIFFUSE, dif5);
+
+		float pos6[4] = { 0,0,17,1 };
+		float amb6[3] = { 0,0,0 };
+		float dif6[3] = { 0,0,0 };
+		float esp6[3] = { 0.3,0.3,0.3 };
+		glEnable(GL_LIGHT6);
+		glLightfv(GL_LIGHT6, GL_POSITION, pos6);
+		glLightfv(GL_LIGHT0, GL_AMBIENT, amb6);
+		glLightfv(GL_LIGHT6, GL_DIFFUSE, dif6);
+		
+		
+		
+
+	/*glLightfv(GL_LIGHT0, GL_POSITION, pos);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diff);*/
+	//glShadeModel(GL_SMOOTH);
+	//glLightfv(GL_LIGHT0, GL_ESPe, diff);
+	//printf("cheguei aqui2\n");
+
+	
+	//Material
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE,matt );
+	//glMaterialfv(GL_FRONT, GL_SPECULAR, matt);
 
 	Objecto aux;
 	glPushMatrix();
 	aux = objectos[0];
 	coords = aux.getCoords();
+	normais = aux.getNormais();
+	textura = aux.getTexture();
 	buffer[0] = aux.getVBOBuffer();
-	//drawScreen();
+	buffer[1] = aux.getNormalVBOBuffer();
+	buffer[2] = aux.getTextureVBOBuffer();
+	texID = aux.getTextid();
 	desenharVBO();
 	glPopMatrix();
-
 
 	// RESTANTES GRUPOS
 
@@ -183,8 +315,14 @@ void renderScene(void) {
 		}
 
 		coords = aux.getCoords();
+		normais = aux.getNormais();
+		textura = aux.getTexture();
 		//drawScreen();
 		buffer[0] = aux.getVBOBuffer();
+		buffer[1] = aux.getNormalVBOBuffer();
+		buffer[2] = aux.getTextureVBOBuffer();
+		texID = aux.getTextid();
+		//loadTexture("");
 		desenharVBO();
 		glPopMatrix();
 
@@ -314,6 +452,7 @@ void handleGrupo(TiXmlNode* pNode) {
 		if (!strcmp(name->Value(), "model")) {
 			TiXmlElement* filename = pNode->ToElement();
 			while (filename != NULL) {
+				texture_filename = filename->Attribute("texture");
 				std::string str = filename->Attribute("file");
 				guardaCoordenadas(str.c_str());
 				filename = filename->NextSiblingElement();
@@ -321,6 +460,26 @@ void handleGrupo(TiXmlNode* pNode) {
 			guardaObjecto();
 		}
 	}
+}
+
+void initGL() {
+
+	// alguns settings para OpenGL
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_NORMALIZE);
+
+	// init
+	//converte();
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
+	glEnable(GL_TEXTURE_2D);
+	//preparaCilindro(2, 1, lados);
 }
 
 int main(int argc, char **argv) {
@@ -353,12 +512,20 @@ int main(int argc, char **argv) {
 	// alguns settings para OpenGL
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glPolygonMode(GL_FRONT, GL_LINE);
+	glPolygonMode(GL_FRONT, GL_FILL);
+	/*Activa Luz//Luzes
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);*/
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 	//Iniciar o glew 
 	glewInit();
+
+	//iniciar o devil e outras opções adicionais
+	initGL();
+	ilInit();
+	//loadTexture();
 
 
 	
