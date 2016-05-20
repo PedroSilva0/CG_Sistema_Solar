@@ -69,7 +69,7 @@
 		//Aqui dizemos qual é GLuint que vamos usar e quandos buffers tem
 		glGenBuffers(1, buffers);
 		// Informamos qual vai ser o buffer que vamos usar para guardar a VBO
-		glBindBuffer(GL_ARRAY_BUFFER, buffers[1]);
+		glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 		//Temos 2 campos importantes (2º e 3º), no 2º metemos a memória necessária para guardar todas as coordenadas, e no 3º informamos o array que tem as coordenadas
 		glBufferData(GL_ARRAY_BUFFER, normais.size() * sizeof(float), &normais[0], GL_STATIC_DRAW);
 		buffer[1] = buffers[0];
@@ -86,7 +86,7 @@
 		//Aqui dizemos qual é GLuint que vamos usar e quandos buffers tem
 		glGenBuffers(1, buffers);
 		// Informamos qual vai ser o buffer que vamos usar para guardar a VBO
-		glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
+		glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 		//Temos 2 campos importantes (2º e 3º), no 2º metemos a memória necessária para guardar todas as coordenadas, e no 3º informamos o array que tem as coordenadas
 		glBufferData(GL_ARRAY_BUFFER, texture.size() * sizeof(float), &texture[0], GL_STATIC_DRAW);
 		buffer[2] = buffers[0];
@@ -107,6 +107,24 @@
 		}
 	}
 
+
+
+
+	void Objecto::setMaterial(float r, float g, float b, float w)
+	{
+		material[0] = r;
+		material[1] = g;
+		material[2] = b;
+		material[3] = w;
+	}
+
+	void Objecto::getMaterial(float res[4])
+	{
+		res[0] = material[0];
+		res[1] = material[1];
+		res[2] = material[2];
+		res[3] = material[3];
+	}
 
 	void Objecto::setEscala(float ax,float ay,float az){
 		scale.set_values(ax, ay, az);
@@ -180,13 +198,11 @@
 
 		unsigned int t, tw, th;
 		unsigned char *texData;
-		ilInit();
 		ilEnable(IL_ORIGIN_SET);
 		ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 		ilGenImages(1, &t);
 		ilBindImage(t);
 		ilLoadImage((ILstring) s.c_str());
-		//ilLoadImage((ILstring)"texture_sol.jpg");
 		tw = ilGetInteger(IL_IMAGE_WIDTH);
 		th = ilGetInteger(IL_IMAGE_HEIGHT);
 		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);

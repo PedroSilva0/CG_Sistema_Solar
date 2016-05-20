@@ -141,9 +141,11 @@ void cone(float raio, float altura, int fatias, int camadas, char* filename) {
 	file.close();
 }
 
+
+
 void esfera(float raio, int fatias, int camadas, char* filename) {
 	double raioS, raioI;
-	double alpha1, betaS, betaI;
+	double alpha1 = 0, betaS, betaI;
 	int auxC, auxF;
 	betaS = M_PI / 2;
 	betaI = betaS - (M_PI / camadas);
@@ -151,81 +153,33 @@ void esfera(float raio, int fatias, int camadas, char* filename) {
 	file.open(filename, ios::ate);
 	float altura_text = camadas;
 	//normal de uma esfera centrada na origem no ponto (x,y,z) == (x,y,z)/(Raio da esfera)
-	for (auxC = 1; auxC <= camadas+2; auxC++) {
+	for (auxC = 0; auxC <= camadas; auxC++) {
 		raioS = raio*cos(betaS);
 		raioI = raio*cos(betaI);
-		/*for (auxF = 0; auxF <= fatias; auxF++) {
-			file << raioS*sin(alpha1) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1) << "\n"; // vertice
-			file << (raioS*sin(alpha1))/raio << " " << sin(betaS) << " " << (raioS*cos(alpha1))/raio << "\n"; // normal
-
-			file << raioI*sin(alpha1) << " " << raio*sin(betaI) << " " << raioI*cos(alpha1) << "\n"; // vertice
-			file << (raioI*sin(alpha1))/raio << " " << sin(betaI) << " " << (raioI*cos(alpha1))/raio << "\n"; // normal
-
-			file << raioS*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n"; // vertice
-			file << (raioS*sin(alpha1 + ((2 * M_PI) / fatias)))/raio << " " << sin(betaS) << " " << (raioS*cos(alpha1 + ((2 * M_PI) / fatias)))/raio << "\n"; // normal
-
-			file << raioS*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n"; // vertice
-			file << (raioS*sin(alpha1 + ((2 * M_PI) / fatias)))/raio << " " << sin(betaS) << " " << (raioS*cos(alpha1 + ((2 * M_PI) / fatias)))/raio << "\n"; // normal
-
-			file << raioI*sin(alpha1) << " " << raio*sin(betaI) << " " << raioI*cos(alpha1) << "\n"; // vertice
-			file << (raioI*sin(alpha1))/raio << " " << sin(betaI) << " " << (raioI*cos(alpha1))/raio << "\n"; // normal
-
-			file << raioI*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << raio*sin(betaI) << " " << raioI*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n";  // vertice
-			file << (raioI*sin(alpha1 + ((2 * M_PI) / fatias)))/raio << " " << sin(betaI) << " " << (raioI*cos(alpha1 + ((2 * M_PI) / fatias)))/raio << "\n";  // normal
-
-			alpha1 += (2 * M_PI) / fatias;
-		}*/
-		/*for (auxF = 0; auxF <= fatias; auxF++) {
-			file << raioS*sin(alpha1) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1) << "\n"; // vertice
-			file << sin(alpha1) << " " << sin(betaS) << " " << cos(alpha1) << "\n"; // normal 
-			file << (float)(auxF)/fatias << " " << (float)altura_text/camadas << "\n"; // text
-
-			file << raioI*sin(alpha1) << " " << raio*sin(betaI) << " " << raioI*cos(alpha1) << "\n"; // vertice
-			file << sin(alpha1) << " " << sin(betaI) << " " << cos(alpha1) << "\n"; // normal
-			file << (float)(auxF+1) / fatias << " " << (float)(altura_text-1) / camadas << "\n"; // text
-
-			file << raioS*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n"; // vertice
-			file << sin(alpha1 + ((2 * M_PI) / fatias)) << " " << sin(betaS) << " " << cos(alpha1 + ((2 * M_PI) / fatias))<< "\n"; // normal
-			file << (float)(auxF + 1) / fatias << " " << (float)(altura_text - 1) / camadas << "\n"; // text
-
-			file << raioS*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n"; // vertice
-			file << sin(alpha1 + ((2 * M_PI) / fatias)) << " " << sin(betaS) << " " << cos(alpha1 + ((2 * M_PI) / fatias)) << "\n"; // normal
-			file << (float)(auxF) / fatias << " " << (float)altura_text / camadas << "\n"; // text
-
-			file << raioI*sin(alpha1) << " " << raio*sin(betaI) << " " << raioI*cos(alpha1) << "\n"; // vertice
-			file << sin(alpha1) << " " << sin(betaI) << " " << cos(alpha1) << "\n"; // normal
-			file << (float)(auxF + 1) / fatias << " " << (float)(altura_text - 1) / camadas << "\n"; // text
-
-			file << raioI*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << raio*sin(betaI) << " " << raioI*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n";  // vertice
-			file << sin(alpha1 + ((2 * M_PI) / fatias)) << " " << sin(betaI) << " " << cos(alpha1 + ((2 * M_PI) / fatias)) << "\n";  // normal
-			file << (float)(auxF) / fatias << " " << (float)altura_text / camadas << "\n"; // text
-
-			alpha1 += (2 * M_PI) / fatias;
-		}*/
-		for (auxF = 0; auxF <= fatias; auxF++) {
+		for (auxF = 0; auxF < fatias; auxF++) {
 			file << raioS*sin(alpha1) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1) << "\n"; // vertice
 			file << (raioS*sin(alpha1)) / raio << " " << sin(betaS) << " " << (raioS*cos(alpha1)) / raio << "\n"; // normal
 			file << (float)(auxF) / fatias << " " << (float)(altura_text) / camadas << "\n"; // text
 
 			file << raioI*sin(alpha1) << " " << raio*sin(betaI) << " " << raioI*cos(alpha1) << "\n"; // vertice
 			file << (raioI*sin(alpha1)) / raio << " " << sin(betaI) << " " << (raioI*cos(alpha1)) / raio << "\n"; // normal
-			file << (float)(auxF + 1) / fatias << " " << (float)(altura_text - 1) / camadas << "\n"; // text
+			file << (float)(auxF) / fatias << " " << (float)(altura_text - 1) / camadas << "\n"; // text
 
 			file << raioS*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n"; // vertice
 			file << (raioS*sin(alpha1 + ((2 * M_PI) / fatias))) / raio << " " << sin(betaS) << " " << (raioS*cos(alpha1 + ((2 * M_PI) / fatias))) / raio << "\n"; // normal
-			file << (float)(auxF + 1) / fatias << " " << (float)(altura_text - 1) / camadas << "\n"; // text
+			file << (float)(auxF + 1) / fatias << " " << (float)(altura_text) / camadas << "\n"; // text
 
 			file << raioS*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n"; // vertice
 			file << (raioS*sin(alpha1 + ((2 * M_PI) / fatias))) / raio << " " << sin(betaS) << " " << (raioS*cos(alpha1 + ((2 * M_PI) / fatias))) / raio << "\n"; // normal
-			file << (float)(auxF) / fatias << " " << (float)(altura_text) / camadas << "\n"; // text
+			file << (float)(auxF+1) / fatias << " " << (float)(altura_text) / camadas << "\n"; // text
 
 			file << raioI*sin(alpha1) << " " << raio*sin(betaI) << " " << raioI*cos(alpha1) << "\n"; // vertice
 			file << (raioI*sin(alpha1)) / raio << " " << sin(betaI) << " " << (raioI*cos(alpha1)) / raio << "\n"; // normal
-			file << (float)(auxF + 1) / fatias << " " << (float)(altura_text - 1) / camadas << "\n"; // text
+			file << (float)(auxF) / fatias << " " << (float)(altura_text - 1) / camadas << "\n"; // text
 
 			file << raioI*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << raio*sin(betaI) << " " << raioI*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n";  // vertice
 			file << (raioI*sin(alpha1 + ((2 * M_PI) / fatias))) / raio << " " << sin(betaI) << " " << (raioI*cos(alpha1 + ((2 * M_PI) / fatias))) / raio << "\n";  // normal
-			file << (float)(auxF) / fatias << " " << (float)(altura_text) / camadas << "\n"; // text
+			file << (float)(auxF+1) / fatias << " " << (float)(altura_text-1) / camadas << "\n"; // text
 
 			alpha1 += (2 * M_PI) / fatias;
 		}
@@ -236,6 +190,55 @@ void esfera(float raio, int fatias, int camadas, char* filename) {
 	}
 	file.close();
 }
+
+void sol(float raio, int fatias, int camadas, char* filename) {
+	double raioS, raioI;
+	double alpha1 = 0, betaS, betaI;
+	int auxC, auxF;
+	betaS = M_PI / 2;
+	betaI = betaS - (M_PI / camadas);
+	ofstream file;
+	file.open(filename, ios::ate);
+	float altura_text = camadas;
+	//normal de uma esfera centrada na origem no ponto (x,y,z) == (x,y,z)/(Raio da esfera)
+	for (auxC = 0; auxC <= camadas; auxC++) {
+		raioS = raio*cos(betaS);
+		raioI = raio*cos(betaI);
+		for (auxF = 0; auxF < fatias; auxF++) {
+			file << raioS*sin(alpha1) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1) << "\n"; // vertice
+			file << -(raioS*sin(alpha1)) / raio << " " << -sin(betaS) << " " << -(raioS*cos(alpha1)) / raio << "\n"; // normal
+			file << (float)(auxF) / fatias << " " << (float)(altura_text) / camadas << "\n"; // text
+
+			file << raioI*sin(alpha1) << " " << raio*sin(betaI) << " " << raioI*cos(alpha1) << "\n"; // vertice
+			file << -(raioI*sin(alpha1)) / raio << " " << -sin(betaI) << " " << -(raioI*cos(alpha1)) / raio << "\n"; // normal
+			file << (float)(auxF) / fatias << " " << (float)(altura_text - 1) / camadas << "\n"; // text
+
+			file << raioS*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n"; // vertice
+			file << -(raioS*sin(alpha1 + ((2 * M_PI) / fatias))) / raio << " " << -sin(betaS) << " " << -(raioS*cos(alpha1 + ((2 * M_PI) / fatias))) / raio << "\n"; // normal
+			file << (float)(auxF + 1) / fatias << " " << (float)(altura_text) / camadas << "\n"; // text
+
+			file << raioS*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << raio*sin(betaS) << " " << raioS*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n"; // vertice
+			file << -(raioS*sin(alpha1 + ((2 * M_PI) / fatias))) / raio << " " << -sin(betaS) << " " << -(raioS*cos(alpha1 + ((2 * M_PI) / fatias))) / raio << "\n"; // normal
+			file << (float)(auxF + 1) / fatias << " " << (float)(altura_text) / camadas << "\n"; // text
+
+			file << raioI*sin(alpha1) << " " << raio*sin(betaI) << " " << raioI*cos(alpha1) << "\n"; // vertice
+			file << -(raioI*sin(alpha1)) / raio << " " << -sin(betaI) << " " << -(raioI*cos(alpha1)) / raio << "\n"; // normal
+			file << (float)(auxF) / fatias << " " << (float)(altura_text - 1) / camadas << "\n"; // text
+
+			file << raioI*sin(alpha1 + ((2 * M_PI) / fatias)) << " " << raio*sin(betaI) << " " << raioI*cos(alpha1 + ((2 * M_PI) / fatias)) << "\n";  // vertice
+			file << -(raioI*sin(alpha1 + ((2 * M_PI) / fatias))) / raio << " " << -sin(betaI) << " " << -(raioI*cos(alpha1 + ((2 * M_PI) / fatias))) / raio << "\n";  // normal
+			file << (float)(auxF + 1) / fatias << " " << (float)(altura_text - 1) / camadas << "\n"; // text
+
+			alpha1 += (2 * M_PI) / fatias;
+		}
+		betaS = betaI;
+		betaI = betaI - (M_PI / camadas);
+		alpha1 = 0;
+		altura_text--;
+	}
+	file.close();
+}
+
 
 void anel(float raioFora, float raioDentro, int fatias, char* filename) {
 
@@ -332,6 +335,13 @@ int main(int argc, char **argv) {
 
 	//esfera
 	if ((strcmp(argv[1], "sphere") == 0) && argc == 6) {
+		/*FILE *fp;
+		fp = fopen("esfera.vbo", "w");*/
+		// outfile.open("esfera.vbo");
+		/*float r = atof(argv[2]);
+		float c = atof(argv[3]);
+		float f = atof(argv[4]);
+		esferaVBO(r, c, f, fp);*/
 		esfera(stof(argv[2], &sz), atoi(argv[3]), atoi(argv[4]), argv[5]);
 		printf("Ficheiro criado com sucesso.");
 		return 0;
@@ -340,6 +350,20 @@ int main(int argc, char **argv) {
 		printf("Argumentos insuficientes.");
 		return 0;
 	}*/
+
+	//Sol
+	if ((strcmp(argv[1], "sol") == 0) && argc == 6) {
+		/*FILE *fp;
+		fp = fopen("esfera.vbo", "w");*/
+		// outfile.open("esfera.vbo");
+		/*float r = atof(argv[2]);
+		float c = atof(argv[3]);
+		float f = atof(argv[4]);
+		esferaVBO(r, c, f, fp);*/
+		sol(stof(argv[2], &sz), atoi(argv[3]), atoi(argv[4]), argv[5]);
+		printf("Ficheiro criado com sucesso.");
+		return 0;
+	}
 
 	//anel
 	if ((strcmp(argv[1], "ring") == 0) && argc == 6) {

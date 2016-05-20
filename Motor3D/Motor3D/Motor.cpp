@@ -1,4 +1,4 @@
-#define _USE_MATH_DEFINES
+Ôªø#define _USE_MATH_DEFINES
 #include <stdlib.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
@@ -10,6 +10,7 @@
 #include "tinyxml.h"
 #include "tinystr.h"
 #include "Objecto.h"
+#include "luz.h"
 #include <string>
 #include <vector>
 #include <fstream>
@@ -18,45 +19,45 @@
 #pragma comment(lib,"glew32.lib")
 #pragma comment(lib, "devil.lib")
 
-//using namespace std;
+//CAMARA
+float alpha = 0.0, beta = 0.0; // angulos para a orientacao
+float px = 0, py = 10, pz = 100; // ponto inicial da camara
+float dx = 0.0, dy = 0.0, dz = 1.0; // direccao da camara
 
+//variaveis tempor√°rias
+float px_c = 0, py_c = 0, pz_c = 0;    //Coordenadas para um ponto de cat-mull de um objecto
+float rt_tempo = 0;						//tempo de rota√ß√£o de um objecto
+float px2 = 0, py2 = 0, pz2 = 0;		//coordenadas de transla√ß√£o global controladas pelo utilizador
+float eixoX = 0, eixoY = 0, eixoZ = 0;  //coordenadas de rota√ß√£o de um objecto
+float sX = 1, sY = 1, sZ = 1;			//coordenadas de escala de um objecto
+float angulo2 = 0, angulo3 = 0;			//angulo de rota√ßao global controlado pelo utilizador
+std::vector<Objecto> objectos;			//objectos a desenhar
+std::vector<float> coords;				//coordenadas de um objecto
+std::vector<float> normais;				//valores das normais de um objecto
+std::vector<float> textura;				//valores da textura de um objecto
+std::vector<char> transfor;				//ordem das transforma√ß√µes de um objecto
+std::string texture_filename;			//nome do ficheiro imagem da textura
 
-float px_c = 0, py_c = 0, pz_c = 0;
-float rt_tempo = 0;
-float px2 = 0, py2 = 0, pz2 = 0;
-float eixoX = 0, eixoY = 0, eixoZ = 0;
-float sX = 1, sY = 1, sZ = 1;
-float angulo2 = 0, angulo3 = 0;
-std::vector<Objecto> objectos;
-std::vector<float> coords;
-std::vector<float> normais;
-std::vector<float> textura;
-std::vector<char> transfor;
-std::string texture_filename;
+//LUZ
+std::vector<Luz> luzes;					//luzes da imagem
+float pos[4] = { 0,0,0,0 },				//posi√ß√£o das luzes por defeito
+amb[3] = { 0,0,0 },						//cor da luz ambiente por defeito
+diff[3] = { 0,0,0 },					//cor da difus√£o por defeito
+matt[4] = { 0,0,0,0 };					//valores dos materiais por defeito
 
 //catmull
-float tr_tempo=0;
-std::vector<float> catmull_pontos;
-float raio = 100, cam_h = 0.5, cam_v = 0.3, camh_x = 0, camh_y = 0;
+float tr_tempo = 0;                       //tempo da transla√ß√£o de um objecto
+std::vector<float> catmull_pontos;		//pontos a usar no catmull
+
 //Para ver o numero de FPS
 int times, timebase, frame = 0, fps = 0;
 char print[20] = "";
 
-//Sem VBOS 900
-
 //VBO
-GLuint buffer[3];  // 0 È coordenadas, 1 È normais,2 e textura
-
-
-
-//LUZ
-float pos[4] = { -1,0,0,1 },
-amb[3] = { 1,1,1 },
-diff[3] = { 1,1,1 },
-matt[4] = { 1,1,1,1 };
+GLuint buffer[3];  // 0 √© coordenadas, 1 √© normais,2 e textura
 
 //devil
-GLuint texID;
+GLuint texID;				//textura de um objecto
 
 
 void changeSize(int w, int h) {
@@ -85,8 +86,6 @@ void changeSize(int w, int h) {
 }
 
 
-
-
 void desenharVBO() {
 	//VBO de coordenadas
 	glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
@@ -94,30 +93,26 @@ void desenharVBO() {
 
 	//VBO de normais
 	glBindBuffer(GL_ARRAY_BUFFER, buffer[1]);
-	glNormalPointer(GL_FLOAT,0,0);
+	glNormalPointer(GL_FLOAT, 0, 0);
 
 	//VBO de texturas
 	glBindBuffer(GL_ARRAY_BUFFER, buffer[2]);
 	glTexCoordPointer(2, GL_FLOAT, 0, 0);
 	glBindTexture(GL_TEXTURE_2D, texID);
 
-	//float white[4] = { 0.7,0.3,0.6,0.5 };
-	//glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, white);
-
 	glDrawArrays(GL_TRIANGLES, 0, coords.size() / 3);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-
 }
 
-/*Guarda as coordenadas em vetor din‚mico*/
+/*Guarda as coordenadas,normais e coordenadas de textura em vetores din√¢micos*/
 void guardaCoordenadas(const char* filename) {
 	int linhas = 0;
 	std::string line;
 	std::ifstream infile(filename);
 	if (infile.is_open()) {
 		while (getline(infile, line)) {
-			if (linhas % 3 == 0) {
+			if (linhas % 3 == 0) {    //linha divisiv√©l por 3 √© um ponto
 				linhas++;
 				char * cstr = new char[line.length() + 1];
 				strcpy(cstr, line.c_str());
@@ -127,7 +122,7 @@ void guardaCoordenadas(const char* filename) {
 					p = strtok(NULL, " ");
 				}
 			}
-			else if (linhas % 3 == 1) {
+			else if (linhas % 3 == 1) {  //linhas com resto 1 quando divididas por 3 s√£o uma normal
 				linhas++;
 				char * cstr = new char[line.length() + 1];
 				strcpy(cstr, line.c_str());
@@ -137,7 +132,7 @@ void guardaCoordenadas(const char* filename) {
 					p = strtok(NULL, " ");
 				}
 			}
-			else {
+			else {				//restantes s√£o coordenadas de textura
 				linhas++;
 				char * cstr = new char[line.length() + 1];
 				strcpy(cstr, line.c_str());
@@ -150,21 +145,20 @@ void guardaCoordenadas(const char* filename) {
 		}
 	}
 	else {
-		printf("N„o abri ficheiro\n");
+		printf("N√£o abri ficheiro\n");
 	}
-	//printf("tot_linhas: %d\n",linhas );
 }
-
-
 
 /*Guarda objecto*/
 void guardaObjecto() {
 	Objecto obj;
-	obj.loadTexture(texture_filename);
+	obj.loadTexture(texture_filename);  //carrega textura
+	obj.setMaterial(matt[0], matt[1], matt[2], matt[3]);			//valores de material
+	matt[0] = matt[1] = matt[2] = matt[3] = 0;		//reset de valores de material
 	obj.guardaCoordenadasOBJ(coords);  //guarda coordenadas dos pontos
 	obj.setNormais(normais);			// guarda normais dos pontos
 	obj.setTexture(textura);			//guarda coords de textura
-	obj.set_cat_trans(catmull_pontos, tr_tempo);  //guarda os pontos a serem utilizados na translaÁ„o e o tempo
+	obj.set_cat_trans(catmull_pontos, tr_tempo);  //guarda os pontos a serem utilizados na transla√ß√£o e o tempo
 	tr_tempo = 0;						//reset do tempo
 	catmull_pontos.clear();				//reset dos pontos
 	obj.setVBOBuffer();					//guarda o buffer a ser utilizado no desenho dos VBO (coordenadas)
@@ -172,126 +166,55 @@ void guardaObjecto() {
 	obj.setTextureVBOBuffer();			//guarda o buffer a ser utilizado no desenho dos VBO (textura)
 	obj.setEscala(sX, sY, sZ);			//guarda a escala do objecto
 	sX = 1; sY = 1; sZ = 1;				//reset da escala
-	obj.setRotacao(eixoX, eixoY, eixoZ, rt_tempo);	//guarda a rotaÁ„o do objecto
-	eixoX = 0; eixoY = 0; eixoZ = 0; rt_tempo = 0;	//reset da rotaÁ„o global
-	obj.guardaTransfor(transfor);					// guarda ordem das transformaÁıes
-	transfor.clear();							//reset da ordem de transformaÁıes
+	obj.setRotacao(eixoX, eixoY, eixoZ, rt_tempo);	//guarda a rota√ß√£o do objecto
+	eixoX = 0; eixoY = 0; eixoZ = 0; rt_tempo = 0;	//reset da rota√ß√£o global
+	obj.guardaTransfor(transfor);					// guarda ordem das transforma√ß√µes
+	transfor.clear();							//reset da ordem de transforma√ß√µes
 	coords.clear();								//reset das coordenadas
 	normais.clear();							//reset das normais
 	textura.clear();							//reset das texturas
 	objectos.push_back(obj);					//guarda objecto
 }
 
-void drawScreen() {
-	glBegin(GL_TRIANGLES);
-	//glColor3f(1, 0, 0);
-	for (size_t i = 0; i < coords.size(); i = i + 3) {
-		glVertex3f(coords[i], coords[i + 1], coords[i + 2]);
-	}
-	glEnd();
-}
 
 void renderScene(void) {
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// set the camera
-	
 	glLoadIdentity();
-	gluLookAt(raio*sin(cam_h)*cos(cam_v), raio*sin(cam_v), raio*cos(cam_h)*cos(cam_v),
-		0.0, 0.0, 0.0,
+
+	// set the camera
+	gluLookAt(px, py, pz,
+		px - dx, py - dy, pz - dz,
 		0.0f, 1.0f, 0.0f);
 
+	//transforma√ß√µes globais controladas pelo utilizador
 	glTranslatef(px2, py2, pz2);
-	//glTranslatef(4, 0, 0);
 	glRotatef(angulo3, 0, 1, 0);
 	glRotatef(angulo2, 1, 0, 0);
 	glRotatef(180, 0, 0, 1);
-		float pos1[4] = {0,20,0,1};
-	 float amb1[3] = {1,1,1};
-	 float dif1[3] = {0,0,0};
-	 float esp1[3] = { 0.3,0.3,0.3 };
-		glEnable(GL_LIGHT1);
-		glLightfv(GL_LIGHT1, GL_POSITION, pos1);
-		glLightfv(GL_LIGHT1, GL_AMBIENT, amb1);
-		glLightfv(GL_LIGHT1, GL_DIFFUSE, dif1);
 
-		float pos2[4] = { 0,-17,0,1 };
-		float amb2[3] = { 1,1,1 };
-		float dif2[3] = { 0,0,0 };
-		float esp2[3] = { 0.3,0.3,0.3 };
-		glEnable(GL_LIGHT2);
-		glLightfv(GL_LIGHT2, GL_POSITION, pos2);
-		glLightfv(GL_LIGHT2, GL_DIFFUSE, dif2);
-		
-		float pos3[4] = { 20,0,0,1 };
-		float amb3[3] = { 1,1,1 };
-		float dif3[3] = { 1,1,1 };
-		float esp3[3] = { 0.3,0.3,0.3 };
-		glEnable(GL_LIGHT3);
-		glLightfv(GL_LIGHT3, GL_POSITION, pos3);
-		glLightfv(GL_LIGHT3, GL_DIFFUSE, dif3);
+	//por as luzes
+	Luz l;
 
-		float pos4[4] = { -17,0,0,1 };
-		float amb4[3] = { 1,1,1 };
-		float dif4[3] = { 1,1,1 };
-		float esp4[3] = { 0.3,0.3,0.3 };
-		glEnable(GL_LIGHT4);
-		glLightfv(GL_LIGHT4, GL_POSITION, pos4);
-		glLightfv(GL_LIGHT4, GL_DIFFUSE, dif4);
-
-		float pos5[4] = { 0,0,17,1 };
-		float amb5[3] = { 1,1,1 };
-		float dif5[3] = { 1,1,1 };
-		float esp5[3] = { 0.3,0.3,0.3 };
-		glEnable(GL_LIGHT5);
-		glLightfv(GL_LIGHT5, GL_POSITION, pos5);
-		glLightfv(GL_LIGHT5, GL_DIFFUSE, dif5);
-
-		float pos6[4] = { 0,0,17,1 };
-		float amb6[3] = { 0,0,0 };
-		float dif6[3] = { 0,0,0 };
-		float esp6[3] = { 0.3,0.3,0.3 };
-		glEnable(GL_LIGHT6);
-		glLightfv(GL_LIGHT6, GL_POSITION, pos6);
-		glLightfv(GL_LIGHT0, GL_AMBIENT, amb6);
-		glLightfv(GL_LIGHT6, GL_DIFFUSE, dif6);
-		
-		
-		
-
-	/*glLightfv(GL_LIGHT0, GL_POSITION, pos);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diff);*/
-	//glShadeModel(GL_SMOOTH);
-	//glLightfv(GL_LIGHT0, GL_ESPe, diff);
-	//printf("cheguei aqui2\n");
-
-	
-	//Material
-	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE,matt );
-	//glMaterialfv(GL_FRONT, GL_SPECULAR, matt);
+	for (size_t k = 0; k < luzes.size(); k++) {
+		l = luzes[k];
+		l.getPos(pos);
+		l.getAmb(amb);
+		l.getDif(diff);
+		glLightfv(GL_LIGHT0 + k, GL_POSITION, pos);
+		glLightfv(GL_LIGHT0 + k, GL_AMBIENT, amb);
+		glLightfv(GL_LIGHT0 + k, GL_DIFFUSE, diff);
+	}
 
 	Objecto aux;
-	glPushMatrix();
-	aux = objectos[0];
-	coords = aux.getCoords();
-	normais = aux.getNormais();
-	textura = aux.getTexture();
-	buffer[0] = aux.getVBOBuffer();
-	buffer[1] = aux.getNormalVBOBuffer();
-	buffer[2] = aux.getTextureVBOBuffer();
-	texID = aux.getTextid();
-	desenharVBO();
-	glPopMatrix();
+	// Desenhar objectos
 
-	// RESTANTES GRUPOS
-
-	for (size_t i = 1; i < objectos.size(); i++) {
+	for (size_t i = 0; i < objectos.size(); i++) {
 		aux = objectos[i];
-		
+
 		glPushMatrix();
-		//PosiÁ„o da terra
+		//Posi√ß√£o da terra
 		if (i == 4) {
 			Objecto terra = objectos[3];
 			float cat_trans[3];
@@ -299,6 +222,8 @@ void renderScene(void) {
 			glTranslatef(cat_trans[0], cat_trans[1], cat_trans[2]);
 
 		}
+
+		//Fazer trasforma√ß√µes do objecto
 		transfor = aux.getTransfor();
 		for (size_t j = 0; j < transfor.size(); j++) {
 			if (transfor[j] == 't') {
@@ -313,22 +238,21 @@ void renderScene(void) {
 				glScalef(aux.getEscalaX(), aux.getEscalaY(), aux.getEscalaZ());
 			}
 		}
-
+		//Buscar os valores do objecto a desenhar
 		coords = aux.getCoords();
 		normais = aux.getNormais();
 		textura = aux.getTexture();
-		//drawScreen();
 		buffer[0] = aux.getVBOBuffer();
 		buffer[1] = aux.getNormalVBOBuffer();
 		buffer[2] = aux.getTextureVBOBuffer();
 		texID = aux.getTextid();
-		//loadTexture("");
+		aux.getMaterial(matt);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, matt);
 		desenharVBO();
 		glPopMatrix();
-
 	}
 
-	//Medir FPS (SÛ d· para ver direito de desligarmos o V-Sync)
+	//Medir FPS (S√≥ d√° para ver direito de desligarmos o V-Sync)
 	frame++;
 	times = glutGet(GLUT_ELAPSED_TIME);
 	if (times - timebase > 1000) {
@@ -343,46 +267,14 @@ void renderScene(void) {
 	glutSwapBuffers();
 }
 
-// escrever funÁ„o de processamento do teclado
-
-
-void setas(int tecla, int x, int y) {
-
-	switch (tecla) {
-	case GLUT_KEY_UP:
-		if (cam_v + 0.05 < M_PI_2)   //Para c‚mera n„o virar ao contr·rio
-			cam_v += 0.05;
-		break;
-	case GLUT_KEY_DOWN:
-		if (cam_v - 0.05 > -M_PI_2)  //Para c‚mera n„o virar ao contr·rio
-			cam_v -= 0.05;
-		break;
-
-	case GLUT_KEY_LEFT:
-		cam_h -= 0.05;
-		break;
-	case GLUT_KEY_RIGHT:
-		cam_h += 0.05;
-		break;
-
-	default:
-		break;
-	}
-	glutPostRedisplay();
-}
+// fun√ß√µes de processamento do teclado
 
 void teclado(unsigned char tecla, int x, int y) {
 	switch (tecla) {
-	case 'q':
-		raio -= 1;
-		break;
-	case 'e':
-		raio += 1;
-		break;
-	case 'd':px2 = px2 + 1; break;
-	case 'a':px2 = px2 - 1; break;
-	case 'w':py2 = py2 + 1; break;
-	case 's':py2 = py2 - 1; break;
+	case 'd':px2 = px2 + 1; break;  //mexer para direita
+	case 'a':px2 = px2 - 1; break;	//mexer para esquerda
+	case 'w':py2 = py2 + 1; break;  //mexer para cima
+	case 's':py2 = py2 - 1; break;  //mexer para baixo
 	case 'j': {angulo3 = angulo3 - 1; } break; //roda para a esquerda
 	case 'l': {angulo3 = angulo3 + 1; } break; //roda para a direira
 	case 'i': {angulo2 = angulo2 + 1; } break; //roda para baixo
@@ -393,8 +285,43 @@ void teclado(unsigned char tecla, int x, int y) {
 	glutPostRedisplay();
 }
 
+void teclaCamara(int tecla, int x, int y) {
+	float k = 0;
+	switch (tecla) {
+		// rotacao da camara na hor (+)
+	case GLUT_KEY_RIGHT: alpha -= 0.02; break;
+		// rotacao da camara na hor (‚àí)
+	case GLUT_KEY_LEFT: alpha += 0.02; break;
+		// rotacao da camara na vert (‚àí)
+	case GLUT_KEY_DOWN: beta += 0.02;
+		if (beta > 1.5) beta = 1.5;
+		if (beta < -1.5) beta = -1.5;
+		break;
+		// rotacao da camara na vert (+)
+	case GLUT_KEY_UP: beta -= 0.02;
+		if (beta > 1.5) beta = 1.5;
+		if (beta < -1.5) beta = -1.5;
+		break;
+		// aproximacao da camara
+	case GLUT_KEY_PAGE_UP: k -= 1; break;
+		// afastamento da camara
+	case GLUT_KEY_PAGE_DOWN: k += 1; break;
 
-// escrever funÁ„o de processamento do menu
+	}
+
+	dx = cos(beta) * sin(alpha);
+	dy = sin(beta);
+	dz = cos(beta) * cos(alpha);
+
+	px = px + k*dx;
+	py = py + k*dy;
+	pz = pz + k*dz;
+
+	glutPostRedisplay();
+}
+
+
+// escrever fun√ß√£o de processamento do menu
 
 void menuop(int id_op) {
 	switch (id_op) {
@@ -407,7 +334,23 @@ void menuop(int id_op) {
 }
 
 
+//Adicionar luzes
+void addLuz() {
+	Luz l;
+	//Posi√ß√£o
+	l.setPos(pos[0], pos[1], pos[2], pos[3]);
+	pos[0] = pos[1] = pos[2] = pos[3] = 0;
+	//Ambiente
+	l.setAmb(amb[0], amb[1], amb[2]);
+	amb[1] = amb[2] = amb[0] = 0;
+	//Difus√£o
+	l.setDiff(diff[0], diff[1], diff[2]);
+	diff[0] = diff[1] = diff[2] = 0;
+	//guardar luz
+	luzes.push_back(l);
+}
 
+//Tratar do xml
 void handleGrupo(TiXmlNode* pNode) {
 	if (pNode != NULL) {
 		TiXmlElement* name = pNode->ToElement();
@@ -454,54 +397,93 @@ void handleGrupo(TiXmlNode* pNode) {
 			while (filename != NULL) {
 				texture_filename = filename->Attribute("texture");
 				std::string str = filename->Attribute("file");
+				name->QueryFloatAttribute("diffR", &matt[0]);
+				name->QueryFloatAttribute("diffG", &matt[1]);
+				name->QueryFloatAttribute("diffB", &matt[2]);
 				guardaCoordenadas(str.c_str());
 				filename = filename->NextSiblingElement();
 			}
 			guardaObjecto();
 		}
+		if (!strcmp(name->Value(), "lights")) {
+			handleGrupo(pNode->FirstChild());
+			handleGrupo(pNode->NextSibling());
+		}
+		if (!strcmp(name->Value(), "light")) {
+			std::string str = name->Attribute("type");
+
+			name->QueryFloatAttribute("posX", &pos[0]);
+			name->QueryFloatAttribute("posY", &pos[1]);
+			name->QueryFloatAttribute("posZ", &pos[2]);
+			if (!strcmp(str.c_str(), "POINT")) {
+				pos[3] = 1;
+			}
+			else {
+				pos[3] = 0;
+			}
+			handleGrupo(pNode->FirstChild());
+			addLuz();
+			handleGrupo(pNode->NextSibling());
+		}
+
+		if (!strcmp(name->Value(), "diffuse")) {
+			name->QueryFloatAttribute("diffR", &diff[0]);
+			name->QueryFloatAttribute("diffG", &diff[1]);
+			name->QueryFloatAttribute("diffB", &diff[2]);
+			handleGrupo(pNode->NextSibling());
+		}
+		if (!strcmp(name->Value(), "ambient")) {
+			name->QueryFloatAttribute("ambR", &amb[0]);
+			name->QueryFloatAttribute("ambG", &amb[1]);
+			name->QueryFloatAttribute("ambB", &amb[2]);
+			handleGrupo(pNode->NextSibling());
+		}
+
 	}
 }
 
+//Ativar luzes individuais
+void enableLuz() {
+	for (size_t i = 0; i < luzes.size(); i++) {
+		glEnable(GL_LIGHT0 + i);
+	}
+}
+
+//alguns valores do glut
 void initGL() {
 
 	// alguns settings para OpenGL
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
-
-	// init
-	//converte();
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
 
 	glEnable(GL_TEXTURE_2D);
-	//preparaCilindro(2, 1, lados);
 }
 
 int main(int argc, char **argv) {
 	int menu1;
-	// inicializaÁ„o
+	// inicializa√ß√£o
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(1000, 500);
 	glutCreateWindow("CG@DI-UM");
 
-
-	// registo de funÁıes 
+	// registo de fun√ß√µes 
 	glutDisplayFunc(renderScene);
 	glutIdleFunc(renderScene);
 	glutReshapeFunc(changeSize);
 
-	// pÙr aqui registo da funÁıes do teclado e rato
-	glutSpecialFunc(setas);
+	// p√¥r aqui registo da fun√ß√µes do teclado e rato
+	glutSpecialFunc(teclaCamara);
 	glutKeyboardFunc(teclado);
 
-	// pÙr aqui a criaÁ„o do menu
+	// p√¥r aqui a cria√ß√£o do menu
 	menu1 = glutCreateMenu(menuop);
 	glutAddMenuEntry("Preenchido", 1);
 	glutAddMenuEntry("Linhas", 2);
@@ -513,22 +495,14 @@ int main(int argc, char **argv) {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glPolygonMode(GL_FRONT, GL_FILL);
-	/*Activa Luz//Luzes
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);*/
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
 
 	//Iniciar o glew 
 	glewInit();
 
-	//iniciar o devil e outras opÁıes adicionais
+	//iniciar o devil e outras op√ß√µes adicionais
 	initGL();
 	ilInit();
-	//loadTexture();
 
-
-	
 	TiXmlDocument doc;
 	TiXmlDocument docAux;
 	if (argc == 2) {
@@ -543,7 +517,6 @@ int main(int argc, char **argv) {
 	}
 	else {
 		TiXmlDocument doc("sistema_solar.xml");
-		//TiXmlDocument doc("teste.xml");
 		doc.LoadFile();
 		if (doc.Error()) {
 			printf("Error in %s: %s\n", doc.Value(), doc.ErrorDesc());
@@ -553,6 +526,8 @@ int main(int argc, char **argv) {
 		node = doc.RootElement();
 		handleGrupo(node->FirstChild());
 	}
+	//ativar luzes
+	enableLuz();
 
 	// entrar no ciclo do GLUT 
 	glutMainLoop();

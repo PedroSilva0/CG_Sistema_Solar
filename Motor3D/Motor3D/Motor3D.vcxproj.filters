@@ -42,6 +42,9 @@
     <ClCompile Include="catmull.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="luz.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tinystr.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="catmull.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="luz.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

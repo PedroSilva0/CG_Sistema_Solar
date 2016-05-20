@@ -22,8 +22,11 @@ private:
 	GLuint buffer[3];
 	catmull cat_trans;
 	GLuint texID;
+	float material[4];
 
 public:
+	void setMaterial(float,float,float,float);
+	void getMaterial(float[4]);
 	void setEscala(float, float, float);
 	void setRotacao(float, float, float, float);
 	void Objecto::set_cat_trans(std::vector<float> pontos, float tempo);
