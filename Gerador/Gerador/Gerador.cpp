@@ -270,26 +270,59 @@ void anel(float raioFora, float raioDentro, int fatias, char* filename) {
 
 			//face superior
 			//primeiro triângulo
-			file << x << " " << 0 << " " << z << "\n";
-			file << x_prox << " " << 0 << " " << z_prox << "\n";
-			file << x_i_prox << " " << 0 << " " << z_i_prox << "\n";
+			file << x << " " << 0 << " " << z << "\n";                 //vertice
+			file << x << " " << 0 << " " << z << "\n";					//normal
+			file << (float) j/fatias << " " << 1 << "\n";				//textura
+
+			file << x_prox << " " << 0 << " " << z_prox << "\n";       //vertice
+			file << x_prox << " " << 0 << " " << z_prox << "\n";		//normal
+			file << (float) (j+1) / fatias << " " << 1 << "\n";			//textura
+
+			file << x_i_prox << " " << 0 << " " << z_i_prox << "\n";   //vertice
+			file << -x_i_prox << " " << 0 << " " << -z_i_prox << "\n";   //normal
+			file << (float) (j + 1) / fatias << " " << 0 << "\n";		//textura
+
+
 			//segundo triangulo
-			file << x << " " << 0 << " " << z << "\n";
-			file << x_i_prox << " " << 0 << " " << z_i_prox << "\n";
-			file << x_i << " " << 0 << " " << z_i << "\n";
+			file << x << " " << 0 << " " << z << "\n";                 //vertice
+			file << x << " " << 0 << " " << z << "\n";                 //normal
+			file << (float)j / fatias << " " << 1 << "\n";				//textura
+
+			file << x_i_prox << " " << 0 << " " << z_i_prox << "\n";   //vertice
+			file << -x_i_prox << " " << 0 << " " << -z_i_prox << "\n";   //normal
+			file << (float)(j + 1) / fatias << " " << 0 << "\n";		//textura
+
+			file << x_i << " " << 0 << " " << z_i << "\n";             //vertice
+			file << -x_i << " " << 0 << " " << -z_i << "\n";				//normal
+			file << (float)j / fatias << " " << 0 << "\n";				//textura
 
 			//face inferior
 
 			//primeiro triangulo
-			file << x_i_prox << " " << 0 << " " << z_i_prox << "\n";
-			file << x_prox << " " << 0 << " " << z_prox << "\n";
-			file << x << " " << 0 << " " << z << "\n";
+			file << x_i_prox << " " << 0 << " " << z_i_prox << "\n";   //vertice
+			file << -x_i_prox << " " << 0 << " " << -z_i_prox << "\n";	//normal
+			file << (float)(j + 1) / fatias << " " << 0 << "\n";		//textura
+
+			file << x_prox << " " << 0 << " " << z_prox << "\n";       //vertice
+			file << x_prox << " " << 0 << " " << z_prox << "\n";		//normal
+			file << (float)(j + 1) / fatias << " " << 1 << "\n";			//textura
+
+			file << x << " " << 0 << " " << z << "\n";                 //vertice
+			file << x << " " << 0 << " " << z << "\n";					//normal
+			file << (float)j / fatias << " " << 1 << "\n";				//textura
+
 			//segundo triangulo
-			file << x_i << " " << 0 << " " << z_i << "\n";
-			file << x_i_prox << " " << 0 << " " << z_i_prox << "\n";
-			file << x << " " << 0 << " " << z << "\n";
+			file << x_i << " " << 0 << " " << z_i << "\n";             //vertice
+			file << -x_i << " " << 0 << " " << -z_i << "\n";				//normal
+			file << (float)(j) / fatias << " " << 0 << "\n";		//textura
 
+			file << x_i_prox << " " << 0 << " " << z_i_prox << "\n";   //vertice
+			file << -x_i_prox << " " << 0 << " " << -z_i_prox << "\n";	//normal
+			file << (float)(j + 1) / fatias << " " << 0 << "\n";        //textura
 
+			file << x << " " << 0 << " " << z << "\n";                 //vertice
+			file << x << " " << 0 << " " << z << "\n";					//normal
+			file << (float)j / fatias << " " << 1 << "\n";				//textura
 
 		}
 

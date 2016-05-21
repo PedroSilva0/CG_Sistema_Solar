@@ -129,6 +129,23 @@
 	  		</models>
 		</group>
 		<group>
+	    	<translate time=294.767> 
+	      		<point X=23.688 Y=0 Z=23.688/>
+	      		<point X=0 Y=0 Z=33.5/>
+	      		<point X=-23.688 Y=0 Z=23.688/>
+	      		<point X=-33.5 Y=0 Z=0/>
+	      		<point X=-23.688 Y=0 Z=-23.688/>
+	     		<point X=0 Y=0 Z=-33.5/>
+	      		<point X=23.688 Y=0 Z=-23.688/>
+	      		<point X=33.5 Y=0 Z=0/>
+      		</translate>
+	    	<rotate time=-5 axisX=0 axisY=1 axisZ=0 />
+	    	<scale X=0.42 Y=0.42 Z=0.42 />		    
+		    <models>
+	     		<model file='anel_sat.3d' texture='saturno_ring.jpg' diffR=0 diffG=0 diffB=0/>
+	  		</models>
+		</group>
+		<group>
 	    	<translate time=10.109> 
 	      		<point X=27.577 Y=0 Z=27.577/>
 	      		<point X=0 Y=0 Z=39/>
@@ -143,6 +160,23 @@
 	    	<scale X=0.38 Y=0.38 Z=0.38 />		    
 		    <models>
 	     		<model file='sol.3d' texture='uranus.jpg' diffR=0 diffG=0 diffB=0/>
+	  		</models>
+		</group>
+		<group>
+	    	<translate time=10.109> 
+	      		<point X=27.577 Y=0 Z=27.577/>
+	      		<point X=0 Y=0 Z=39/>
+	      		<point X=-27.577 Y=0 Z=27.577/>
+	      		<point X=-39 Y=0 Z=0/>
+	      		<point X=-27.577 Y=0 Z=-27.577/>
+	     		<point X=0 Y=0 Z=-39/>
+	      		<point X=27.577 Y=0 Z=-27.577/>
+	      		<point X=39 Y=0 Z=0/>
+      		</translate>
+      		<rotate time=5 axisX=0 axisY=1 axisZ=0 />
+	    	<scale X=0.38 Y=0.38 Z=0.38 />		    
+		    <models>
+	     		<model file='anel_ura.3d' texture='texture_sol.jpg' diffR=0 diffG=0 diffB=0/>
 	  		</models>
 		</group>
 		<group>
