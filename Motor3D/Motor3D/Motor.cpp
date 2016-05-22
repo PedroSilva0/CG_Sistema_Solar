@@ -21,7 +21,7 @@
 
 //CAMARA
 float alpha = 0.0, beta = 0.0; // angulos para a orientacao
-float px = 0, py = 10, pz = 100; // ponto inicial da camara
+float px = 0, py = 10, pz = 200; // ponto inicial da camara
 float dx = 0.0, dy = 0.0, dz = 1.0; // direccao da camara
 
 //variaveis temporárias
@@ -513,6 +513,7 @@ int main(int argc, char **argv) {
 			exit(1);
 		}
 		TiXmlNode* node = 0;
+		node = doc.RootElement();
 		handleGrupo(node->FirstChild());
 	}
 	else {

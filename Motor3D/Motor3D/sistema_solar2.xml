@@ -11,14 +11,14 @@
 	  	</models>
 	    <group>
 	    	<translate time=2.41> 
-      			<point X=15.32 Y=0 Z=12.856/>
-      			<point X=0 Y=0 Z=20/>
-      			<point X=-15.32 Y=0 Z=12.856/>
-      			<point X=-20 Y=0 Z=0/>
-      			<point X=-15.32 Y=0 Z=-12.856/>
-      			<point X=0 Y=0 Z=-20/>
-      			<point X=15.32 Y=0 Z=-12.856/>
-      			<point X=20 Y=0 Z=0/>
+      			<point X=19.15 Y=0 Z=16.07/>
+      			<point X=0 Y=0 Z=25/>
+      			<point X=-19.15 Y=0 Z=16.07/>
+      			<point X=-25 Y=0 Z=0/>
+      			<point X=-19.15 Y=0 Z=-16.07/>
+      			<point X=0 Y=0 Z=-25/>
+      			<point X=19.15 Y=0 Z=-16.07/>
+      			<point X=25 Y=0 Z=0/>
       		</translate>
 			<rotate time=-1.16 axisX=0 axisY=1 axisZ=0/>
 	    	<scale X=0.12 Y=0.12 Z=0.12 />		    
@@ -28,14 +28,14 @@
 		</group>
 		 <group>
 	    	<translate time=6.56> 
-      			<point X=20 Y=0 Z=16.614/>
-      			<point X=0 Y=0 Z=26/>
-      			<point X=-20 Y=0 Z=16.614/>
-      			<point X=-26 Y=0 Z=0/>
-      			<point X=-20 Y=0 Z=-16.614/>
-      			<point X=0 Y=0 Z=-26/>
-      			<point X=20 Y=0 Z=-16.614/>                  
-      			<point X=26 Y=0 Z=0/>
+      			<point X=25 Y=0 Z=20.767/>
+      			<point X=0 Y=0 Z=32.5/>
+      			<point X=-25 Y=0 Z=20.767/>
+      			<point X=-32.5 Y=0 Z=0/>
+      			<point X=-25 Y=0 Z=-20.767/>
+      			<point X=0 Y=0 Z=-32.5/>
+      			<point X=25 Y=0 Z=-20.767/>                  
+      			<point X=32.5 Y=0 Z=0/>
       		</translate>
 			<rotate time=4.86 axisX=0 axisY=1 axisZ=0/>
 	    	<scale X=0.2 Y=0.2 Z=0.2 />	   
@@ -45,31 +45,31 @@
 		</group>
 		<group>
 	    	<translate time=10> 
-      			<point X=23.8 Y=0 Z=24.28/>
-      			<point X=0 Y=0 Z=34/>
-      			<point X=-23.8 Y=0 Z=24.28/>
-      			<point X=-34 Y=0 Z=0/>
-      			<point X=-23.8 Y=0 Z=-24.28/>
-      			<point X=0 Y=0 Z=-34/>
-      			<point X=23.8 Y=0 Z=-24.28/>
-      			<point X=34 Y=0 Z=0/>
+      			<point X=29.75 Y=0 Z=30.35/>
+      			<point X=0 Y=0 Z=42.5/>
+      			<point X=-29.75 Y=0 Z=30.35/>
+      			<point X=-42.5 Y=0 Z=0/>
+      			<point X=-29.75 Y=0 Z=-30.35/>
+      			<point X=0 Y=0 Z=-42.5/>
+      			<point X=29.75 Y=0 Z=-30.35/>
+      			<point X=42.5 Y=0 Z=0/>
       		</translate>
 			<rotate time=-0.027 axisX=0 axisY=1 axisZ=0/>
 	    	<scale X=0.24 Y=0.24 Z=0.24 />    
 		    <models>
-	     		<model file='sol.3d' texture='transferir.jpg' specR=0 specG=0 specB=0/>
+	     		<model file='sol.3d' texture='text_terra.jpg' specR=0 specG=0 specB=0/>
 	  		</models>
 		</group>
 		<group>
 	    	<translate time=0.739> 
-      			<point X=2 Y=0 Z=2.236/>
-      			<point X=0 Y=0 Z=3/>
-      			<point X=-2 Y=0 Z=2.236/>
-      			<point X=-3 Y=0 Z=0/>
-      			<point X=-2 Y=0 Z=-2.236/>
-      			<point X=0 Y=0 Z=-3/>
-      			<point X=2 Y=0 Z=-2.236/>
-      			<point X=3 Y=0 Z=0/>
+      			<point X=2.5 Y=0 Z=2.795/>
+      			<point X=0 Y=0 Z=3.75/>
+      			<point X=-2.5 Y=0 Z=2.795/>
+      			<point X=-3.75 Y=0 Z=0/>
+      			<point X=-2.5 Y=0 Z=-2.795/>
+      			<point X=0 Y=0 Z=-3.75/>
+      			<point X=2.5 Y=0 Z=-2.795/>
+      			<point X=3.75 Y=0 Z=0/>
       		</translate>
 	    	<rotate time=-0.54 axisX=0 axisY=1 axisZ=0 />
 	    	<scale X=0.025 Y=0.025 Z=0.025 />		    
@@ -79,14 +79,14 @@
 	  	</group>
 	  	<group>
 	  		<translate time=18.82> 
-	      		<point X=28.284 Y=0 Z=28.284/>
-	      		<point X=0 Y=0 Z=40/>
-	      		<point X=-28.284 Y=0 Z=28.284/>
-	      		<point X=-40 Y=0 Z=0/>
-	      		<point X=-28.284 Y=0 Z=-28.284/>
-	     		<point X=0 Y=0 Z=-40/>
-	      		<point X=28.284 Y=0 Z=-28.284/>
-	      		<point X=40 Y=0 Z=0/>
+	      		<point X=35.355 Y=0 Z=35.355/>
+	      		<point X=0 Y=0 Z=50/>
+	      		<point X=-35.355 Y=0 Z=35.355/>
+	      		<point X=-50 Y=0 Z=0/>
+	      		<point X=-35.355 Y=0 Z=-35.355/>
+	     		<point X=0 Y=0 Z=-50/>
+	      		<point X=35.355 Y=0 Z=-35.355/>
+	      		<point X=50 Y=0 Z=0/>
       		</translate>
 		    <rotate time=-0.028 axisX=0 axisY=1 axisZ=0 />
 		    <scale X=0.15 Y=0.15 Z=0.15 />		    
@@ -96,14 +96,14 @@
 		</group>
 		<group>
 	    	<translate time=118.68>
-	      		<point X=38.89 Y=0 Z=38.89/>
-	      		<point X=0 Y=0 Z=55/>
-	      		<point X=-38.89 Y=0 Z=38.89/>
-	      		<point X=-55 Y=0 Z=0/>
-	      		<point X=-38.89 Y=0 Z=-38.89/>
-	     		<point X=0 Y=0 Z=-55/>
-	      		<point X=38.89 Y=0 Z=-38.89/>
-	      		<point X=55 Y=0 Z=0/>
+	      		<point X=48.612 Y=0 Z=48.612/>
+	      		<point X=0 Y=0 Z=68.75/>
+	      		<point X=-48.612 Y=0 Z=48.612/>
+	      		<point X=-68.75 Y=0 Z=0/>
+	      		<point X=-48.612 Y=0 Z=-48.612/>
+	     		<point X=0 Y=0 Z=-68.75/>
+	      		<point X=48.612 Y=0 Z=-48.612/>
+	      		<point X=68.75 Y=0 Z=0/>
       		</translate>
 	    	<rotate time=-0.006 axisX=0 axisY=1 axisZ=0 />
 	    	<scale X=0.53 Y=0.53 Z=0.53 />		    
@@ -113,14 +113,14 @@
 		</group>
 		<group>
 	    	<translate time=294.767> 
-	      		<point X=47.376 Y=0 Z=47.376/>
-	      		<point X=0 Y=0 Z=67/>
-	      		<point X=-47.376 Y=0 Z=47.376/>
-	      		<point X=-67 Y=0 Z=0/>
-	      		<point X=-47.376 Y=0 Z=-47.376/>
-	     		<point X=0 Y=0 Z=-67/>
-	      		<point X=47.376 Y=0 Z=-47.376/>
-	      		<point X=67 Y=0 Z=0/>
+	      		<point X=59.22 Y=0 Z=59.22/>
+	      		<point X=0 Y=0 Z=83.75/>
+	      		<point X=-59.22 Y=0 Z=59.22/>
+	      		<point X=-83.75 Y=0 Z=0/>
+	      		<point X=-59.22 Y=0 Z=-59.22/>
+	     		<point X=0 Y=0 Z=-83.75/>
+	      		<point X=59.22 Y=0 Z=-59.22/>
+	      		<point X=83.75 Y=0 Z=0/>
       		</translate>
 	    	<rotate time=-0.013 axisX=0 axisY=1 axisZ=0 />
 	    	<scale X=0.42 Y=0.42 Z=0.42 />		    
@@ -130,31 +130,31 @@
 		</group>
 		<group>
 	    	<translate time=294.767> 
-	      		<point X=47.376 Y=0 Z=47.376/>
-	      		<point X=0 Y=0 Z=67/>
-	      		<point X=-47.376 Y=0 Z=47.376/>
-	      		<point X=-67 Y=0 Z=0/>
-	      		<point X=-47.376 Y=0 Z=-47.376/>
-	     		<point X=0 Y=0 Z=-67/>
-	      		<point X=47.376 Y=0 Z=-47.376/>
-	      		<point X=67 Y=0 Z=0/>
+	      		<point X=59.22 Y=0 Z=59.22/>
+	      		<point X=0 Y=0 Z=83.75/>
+	      		<point X=-59.22 Y=0 Z=59.22/>
+	      		<point X=-83.75 Y=0 Z=0/>
+	      		<point X=-59.22 Y=0 Z=-59.22/>
+	     		<point X=0 Y=0 Z=-83.75/>
+	      		<point X=59.22 Y=0 Z=-59.22/>
+	      		<point X=83.75 Y=0 Z=0/>
       		</translate>
 	    	<rotate time=-5 axisX=0 axisY=1 axisZ=0 />
 	    	<scale X=0.42 Y=0.42 Z=0.42 />		    
 		    <models>
-	     		<model file='anel_sat.3d' texture='saturno_ring.jpg' specR=0 specG=0 specB=0/>
+	     		<model file='anel_sat.3d' texture='saturno.jpg' specR=0 specG=0 specB=0/>
 	  		</models>
 		</group>
 		<group>
 	    	<translate time=10.109> 
-	      		<point X=55.154 Y=0 Z=55.154/>
-	      		<point X=0 Y=0 Z=78/>
-	      		<point X=-55.154 Y=0 Z=55.154/>
-	      		<point X=-78 Y=0 Z=0/>
-	      		<point X=-55.154 Y=0 Z=-55.154/>
-	     		<point X=0 Y=0 Z=-78/>
-	      		<point X=55.154 Y=0 Z=-55.154/>
-	      		<point X=78 Y=0 Z=0/>
+	      		<point X=75.836 Y=0 Z=75.836/>
+	      		<point X=0 Y=0 Z=107.25/>
+	      		<point X=-75.836 Y=0 Z=75.836/>
+	      		<point X=-107.25 Y=0 Z=0/>
+	      		<point X=-75.836 Y=0 Z=-75.836/>
+	     		<point X=0 Y=0 Z=-107.25/>
+	      		<point X=75.836 Y=0 Z=-75.836/>
+	      		<point X=107.25 Y=0 Z=0/>
       		</translate>
 	    	<rotate time=0.019 axisX=0 axisY=1 axisZ=0 />
 	    	<scale X=0.38 Y=0.38 Z=0.38 />		    
@@ -163,32 +163,15 @@
 	  		</models>
 		</group>
 		<group>
-	    	<translate time=10.109> 
-	      		<point X=55.154 Y=0 Z=55.154/>
-	      		<point X=0 Y=0 Z=78/>
-	      		<point X=-55.154 Y=0 Z=55.154/>
-	      		<point X=-78 Y=0 Z=0/>
-	      		<point X=-55.154 Y=0 Z=-55.154/>
-	     		<point X=0 Y=0 Z=-78/>
-	      		<point X=55.154 Y=0 Z=-55.154/>
-	      		<point X=78 Y=0 Z=0/>
-      		</translate>
-      		<rotate time=5 axisX=0 axisY=1 axisZ=0 />
-	    	<scale X=0.38 Y=0.38 Z=0.38 />		    
-		    <models>
-	     		<model file='anel_ura.3d' texture='texture_sol.jpg' specR=0 specG=0 specB=0/>
-	  		</models>
-		</group>
-		<group>
 	    	<translate time=10.082> 
-	      		<point X=61.236 Y=0 Z=61.236/>
-	      		<point X=0 Y=0 Z=86.6/>
-	      		<point X=-61.236 Y=0 Z=61.236/>
-	      		<point X=-86.6 Y=0 Z=0/>
-	      		<point X=-61.236 Y=0 Z=-61.236/>
-	     		<point X=0 Y=0 Z=-86.6/>
-	      		<point X=61.236 Y=0 Z=-61.236/>
-	      		<point X=86.6 Y=0 Z=0/>
+	      		<point X=91.854 Y=0 Z=91.854/>
+	      		<point X=0 Y=0 Z=129.9/>
+	      		<point X=-91.854 Y=0 Z=91.854/>
+	      		<point X=-129.9 Y=0 Z=0/>
+	      		<point X=-91.854 Y=0 Z=-91.854/>
+	     		<point X=0 Y=0 Z=-129.9/>
+	      		<point X=91.854 Y=0 Z=-91.854/>
+	      		<point X=129.9 Y=0 Z=0/>
       		</translate>
 	    	<rotate time=-0.018 axisX=0 axisY=1 axisZ=0 />
 	    	<scale X=0.3 Y=0.3 Z=0.3 />		    
@@ -198,14 +181,14 @@
 		</group>
 		<group>
 	    	<translate time=2482.547> 
-	      		<point X=65.054 Y=0 Z=65.054/>
-	      		<point X=0 Y=0 Z=92/>
-	      		<point X=-65.054 Y=0 Z=65.054/>
-	      		<point X=-92 Y=0 Z=0/>
-	      		<point X=-65.054 Y=0 Z=-65.054/>
-	     		<point X=0 Y=0 Z=-92/>
-	      		<point X=65.054 Y=0 Z=-65.054/>
-	      		<point X=92 Y=0 Z=0/>
+	      		<point X=102.459 Y=0 Z=102.459/>
+	      		<point X=0 Y=0 Z=144.9/>
+	      		<point X=-102.459 Y=0 Z=102.459/>
+	      		<point X=-144.9 Y=0 Z=0/>
+	      		<point X=-102.459 Y=0 Z=-102.459/>
+	     		<point X=0 Y=0 Z=-144.9/>
+	      		<point X=102.459 Y=0 Z=-102.459/>
+	      		<point X=144.9 Y=0 Z=0/>
       		</translate>
 	    	<rotate time=0.178 axisX=0 axisY=1 axisZ=0 />
 	    	<scale X=0.05 Y=0.05 Z=0.05 />		    
