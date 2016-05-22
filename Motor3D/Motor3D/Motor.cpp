@@ -397,9 +397,9 @@ void handleGrupo(TiXmlNode* pNode) {
 			while (filename != NULL) {
 				texture_filename = filename->Attribute("texture");
 				std::string str = filename->Attribute("file");
-				name->QueryFloatAttribute("diffR", &matt[0]);
-				name->QueryFloatAttribute("diffG", &matt[1]);
-				name->QueryFloatAttribute("diffB", &matt[2]);
+				name->QueryFloatAttribute("specR", &matt[0]);
+				name->QueryFloatAttribute("specG", &matt[1]);
+				name->QueryFloatAttribute("specB", &matt[2]);
 				guardaCoordenadas(str.c_str());
 				filename = filename->NextSiblingElement();
 			}

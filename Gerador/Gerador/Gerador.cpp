@@ -368,13 +368,6 @@ int main(int argc, char **argv) {
 
 	//esfera
 	if ((strcmp(argv[1], "sphere") == 0) && argc == 6) {
-		/*FILE *fp;
-		fp = fopen("esfera.vbo", "w");*/
-		// outfile.open("esfera.vbo");
-		/*float r = atof(argv[2]);
-		float c = atof(argv[3]);
-		float f = atof(argv[4]);
-		esferaVBO(r, c, f, fp);*/
 		esfera(stof(argv[2], &sz), atoi(argv[3]), atoi(argv[4]), argv[5]);
 		printf("Ficheiro criado com sucesso.");
 		return 0;
@@ -386,13 +379,6 @@ int main(int argc, char **argv) {
 
 	//Sol
 	if ((strcmp(argv[1], "sol") == 0) && argc == 6) {
-		/*FILE *fp;
-		fp = fopen("esfera.vbo", "w");*/
-		// outfile.open("esfera.vbo");
-		/*float r = atof(argv[2]);
-		float c = atof(argv[3]);
-		float f = atof(argv[4]);
-		esferaVBO(r, c, f, fp);*/
 		sol(stof(argv[2], &sz), atoi(argv[3]), atoi(argv[4]), argv[5]);
 		printf("Ficheiro criado com sucesso.");
 		return 0;

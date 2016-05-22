@@ -15,7 +15,6 @@ private:
 	float pos[4];
 	float amb[3];
 	float dif[3];
-	int tipo;
 
 public:
 	void setPos(float, float, float,float);
